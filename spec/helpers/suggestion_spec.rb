@@ -34,7 +34,6 @@ describe Suggestion, :type => :class do
       allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
       allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
       allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
-
     end
 
     it 'instantiates a new instance of url analysis' do
@@ -42,22 +41,18 @@ describe Suggestion, :type => :class do
       suggestion.news_source
     end
 
-    it 'retrieves the papers and their political leaning scores' do
+    it 'calculates the score needed based on current political leaning score' do
       expect(dummy_url_analysis).to receive(:political_leaning_perc)
       suggestion.news_source
     end
 
-    it 'calls calculate_matches' do
-      expect(suggestion).to receive(:bias_eliminator).with(-5)
+    it 'calls find_suggestions with the score needed' do
+      expect(suggestion).to receive(:eliminate_bias).with(-5)
       suggestion.news_source
     end
 
 
-    describe '#bias_eliminator' do
-
-      before do
-        suggestion.news_source
-      end
+    describe '#eliminate_bias' do
 
       xit 'suggests a news source to read based on bringing political leaning to 0' do
 
