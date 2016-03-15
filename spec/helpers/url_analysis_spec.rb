@@ -17,7 +17,9 @@ describe UrlAnalysis, :type => :class do
                 huffington_post: -40,
                 buzzfeed: -20,
                 independent: -20,
-                thetimes: 20}}
+                thetimes: 60,
+                dailyexpress: 20,
+                morningstar: -60}}
 
 
 

@@ -20,13 +20,20 @@ attr_reader :url_analysis, :suggested_sources, :urls
       else
       (current_score * (urls.length + 1)) / urls.length
       end
-    find_suggestions(score_needed)
-    # url_analysis.political_leaning_perc + .papers[source] / (news_source_list.size + 1) == 0
+    find_suggestion(score_needed)
   end
 
 
 
-  def find_suggestions(score_needed)
+  def find_suggestion(score_needed)
+    papers = url_analysis.papers
+    matches = []
+    papers.select{|source, rating| matches << source if rating == score_needed}
+      if matches.length == 0
+        return 'combo needed'
+      else
+        return matches.pop
+      end
   #   papers = url_analysis.papers
   #   if leaning == :right
   #     right_leaning = papers.keys.keep_if{|source| papers[source] > 0}
@@ -38,6 +45,7 @@ attr_reader :url_analysis, :suggested_sources, :urls
   #     #find the left paper sources and quantity needed to get average
   #   end
   end
+
   #
   # def left?(current_score)
   #   return current_score < 0 ? true : false

@@ -14,7 +14,9 @@ class UrlAnalysis
               huffington_post: -40,
               buzzfeed: -20,
               independent: -20,
-              thetimes: 20}
+              thetimes: 60,
+              dailyexpress: 20,
+              morningstar: -60}
     @news_source_list = Array.new
     @recent_scores = Array.new
     @user_urls = user_urls
