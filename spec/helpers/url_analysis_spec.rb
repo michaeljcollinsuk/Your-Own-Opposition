@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UrlCalculator, :type => :class do
+describe UrlAnalysis, :type => :class do
   let(:daily_mail_url) {'http://www.dailymail.co.uk/home/index.html'}
   let(:telegraph_url) {'http://www.telegraph.co.uk/'}
   let(:guardian_url) {'http://www.theguardian.com/'}
@@ -77,14 +77,12 @@ describe UrlCalculator, :type => :class do
 
   describe '#political_leaning_perc' do
 
-    xit 'calls political_leaning_scores' do
-      expect(url_calculator_used).to receive(:political_leaning_scores)
-      url_calculator_used.political_leaning_perc
-    end
 
     it 'returns a score between -100 and 100 for political leniency' do
       expect(url_calculator_used.political_leaning_perc).to eq(26)
     end
 
   end
+
+
 end

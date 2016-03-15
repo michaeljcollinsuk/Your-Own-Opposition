@@ -1,7 +1,8 @@
+private
 
-class UrlCalculator
+class UrlAnalysis
 
-  attr_reader :news_source_list, :papers, :user_urls, :recent_scores
+  attr_reader :news_source_list, :recent_scores
 
   def initialize(user_urls= [])
     @papers = {dailymail: 100,
@@ -14,14 +15,12 @@ class UrlCalculator
               buzzfeed: -20,
               independent: -20,
               thetimes: 20}
-    @news_source_list = []
-    @recent_scores = []
+    @news_source_list = Array.new
+    @recent_scores = Array.new
     @user_urls = user_urls
   end
 
-  def political_leaning_perc
-    (political_leaning_scores.inject(:+)) / news_source_list.length
-  end
+
 
   def political_leaning_scores
     parse_history.each{|source| @recent_scores << papers[source]}
@@ -34,9 +33,16 @@ class UrlCalculator
   end
 
   def parse(url)
-    url.split(".").map!{|keyword| keyword.to_sym}.keep_if{|news_source| papers.has_key? news_source}
+    url.split(".").map!{|keyword| keyword.to_sym}
+                  .keep_if{|news_source| papers.has_key? news_source}
+  end
+
+  public
+
+  attr_reader :user_urls, :papers
+
+  def political_leaning_perc
+    (political_leaning_scores.inject(:+)) / news_source_list.length
   end
 
 end
-
-# return {daily_mail: 1} if url.include?('dailymail')
