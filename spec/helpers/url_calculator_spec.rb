@@ -1,24 +1,27 @@
 require 'rails_helper'
 
-describe Url_calculator do
-  let(:dummy_selection) {double :user_urls}
-  subject(:url_calculator) {described_class.new(user_urls)}
-  let(:papers) {{dailymail: right,
-                 telegraph: right,
-                 bbc: center,
-                 guardian: left,
-                 mirror: left,
-                 sun: right,
-                 huffington_post: center-left,
-                 buzzfeed: left,
-                 independent: center-left,
-                 the_times: center-right}}
-  let(:daily_mail_url) {'http://www.dailymail.co.uk/home/index.html'}
-  let(:telegraph_url) {'http://www.telegraph.co.uk/'}
+describe UrlCalculator, :type => :class do
+  subject
+  # let(:user_urls) {double :dummy_urls}
+  # let(:papers) {{dailymail: :right,
+  #                telegraph: :right,
+  #                bbc: :center,
+  #                guardian: :left,
+  #                mirror: :left,
+  #                sun: :right,
+  #                huffington_post: :center_left,
+  #                buzzfeed: :left,
+  #                independent: :center_left,
+  #                the_times: :center_right}}
+  # let(:daily_mail_url) {'http://www.dailymail.co.uk/home/index.html'}
+  # let(:telegraph_url) {'http://www.telegraph.co.uk/'}
 
   describe '#initialize' do
 
-    it 'has a hash of papers matched to their political leniencies'
+    before do
+    end
+
+    it 'has a hash of papers matched to their political leniencies' do
       expect(url_calculator.papers).to eq(papers)
     end
 
