@@ -1,8 +1,17 @@
+<% if @url.any? %>
+<% @url.each do |url| %>
+    <h2> <%= url.name %> </h2>
+    <h2> <%= url.link %> </h2>
+  <% end %>
+<% else %>
+  No urls yet
+<% end %>
+
 <p>Add link</p>
-<form action="/urls" method="post">
-  <label for="input_article">
-    <h1>URL</h1>
-    <input type="text" name="url"/>
-  </label>
-  <input type="submit" value="Add"/>
-</form>
+<%= form_for @url.new do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.label :link %>
+  <%= f.text_field :link %>
+  <%= f.submit %>
+<% end %>
