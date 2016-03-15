@@ -2,6 +2,9 @@ class UrlsController < ApplicationController
 
   def index
     'eggs'
-  end 
+  end
+
+  def create
+  end
 
 end
