@@ -16,7 +16,6 @@ def login
 end
 
 def create_url
-  fill_in 'Name', with: 'Guardian'
   fill_in 'Link', with: 'www.firstlink.com'
   click_button 'Create Url'
 end

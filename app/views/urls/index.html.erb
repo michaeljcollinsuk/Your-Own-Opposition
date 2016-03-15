@@ -11,8 +11,6 @@
 <% if current_user %>
 <p>Add link</p>
   <%= form_for @url.new do |f| %>
-    <%= f.label :name %>
-    <%= f.text_field :name, required: true %>
     <%= f.label :link %>
     <%= f.text_field :link, required: true %>
     <%= f.submit %>
