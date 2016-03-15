@@ -18,12 +18,13 @@ describe Suggestion, :type => :class do
                 dailyexpress: 20,
                 morningstar: -60}}
   let(:leftwing_score) {-40}
-  let(:rightwing_score) {27}
+  let(:rightwing_score) {90}
 
   before do
     allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
     allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
     allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
+    allow(suggestion).to receive(:left_needed?)
   end
 
   describe '#initialize' do
@@ -51,13 +52,6 @@ describe Suggestion, :type => :class do
   end
 
   describe '#news_source' do
-
-
-    # before do
-    #   allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
-    #   allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
-    #   allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
-    # end
 
     it 'instantiates a new instance of url analysis with the suggestions urls' do
       expect(dummy_url_analysis_klass).to receive(:new).with(dummy_urls)
@@ -126,6 +120,11 @@ describe Suggestion, :type => :class do
         expect(suggestion.find_suggestion(-20)).to include(:independent, :buzzfeed)
       end
 
+      it 'updates the suggested_sources hash with suggestions for political jolt' do
+        suggestion.find_suggestion(-20)
+        expect(suggestion.suggested_sources[:political_jolt]).to eq([:buzzfeed, :independent])
+      end
+
       it 'calls #find_many_suggestions if no single match is found' do
         expect(suggestion).to receive(:find_many_suggestions).with(10, dummy_papers)
         suggestion.find_suggestion(10)
@@ -133,5 +132,48 @@ describe Suggestion, :type => :class do
 
     end
 
+    describe '#find_many_suggestions' do
+
+      context '#right wing needed' do
+        before do
+          suggestion.news_source
+        end
+
+        it 'decides if you need leftwing news based on +ve score needed' do
+          expect(suggestion).to receive(:left_needed?).with(10).and_return(false)
+          suggestion.find_suggestion(10)
+        end
+
+        it 'it calls #filter_sources with ":right"' do
+          expect(suggestion).to receive(:filter_sources).with(:right, dummy_papers)
+          suggestion.find_suggestion(10)
+        end
+      end
+
+      context '#right wing needed' do
+
+        before do
+          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(rightwing_score)
+        end
+
+
+
+        it 'decides if you need leftwing news based on -ve score needed' do
+          expect(suggestion).to receive(:left_needed?).and_return(true)
+          suggestion.news_source
+        end
+
+        xit 'it calls #filter_sources with ":left"' do
+          expect(suggestion).to receive(:filter_sources).with(:left, dummy_papers)
+          suggestion.news_source
+          # suggestion.find_suggestion(-10)
+        end
+      end
+
+
+      xit 'it updates the suggested_sources hash ' do
+        # expect(suggestion.)
+      end
+    end
   end
 end

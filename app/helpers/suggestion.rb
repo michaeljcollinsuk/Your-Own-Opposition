@@ -22,8 +22,6 @@ attr_reader :url_analysis, :suggested_sources, :urls
     end
   end
 
-
-
   def find_suggestion(score_needed)
    papers = url_analysis.papers
    matches = []
@@ -31,15 +29,29 @@ attr_reader :url_analysis, :suggested_sources, :urls
     if matches.length == 0
       find_many_suggestions(score_needed, papers)
     else
+      @suggested_sources = {political_jolt: matches}
       matches
     end
   end
 
   def find_many_suggestions(score_needed, papers)
+    bias_needed = left_needed?(score_needed) ? :left : :right
+    # require 'pry'; binding.pry
+    filter_sources(bias_needed, papers)
+  end
 
+  def left_needed?(score_needed)
+    score_needed < 0
+  end
+
+  def filter_sources(bias_needed, papers)
+    if bias_needed == :left
+      #takes keys from hash of left wing papers
+    else
+      #takes keys from has of right wing papers
+    end
   end
 
 
-  # def topic
- # a method to find out the keywords to give to the google news api
+
 end
