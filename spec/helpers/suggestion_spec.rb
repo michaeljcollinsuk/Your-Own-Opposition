@@ -5,9 +5,6 @@ describe Suggestion, :type => :class do
   let(:dummy_url_analysis) {double :dummy_url_analysis}
   let(:dummy_urls) {['a', 'b']}
   subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
-  subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
-
-
   let(:dummy_papers) {{dailymail: 100,
                 telegraph: 80,
                 bbc: 5,
@@ -20,6 +17,14 @@ describe Suggestion, :type => :class do
                 thetimes: 60,
                 dailyexpress: 20,
                 morningstar: -60}}
+  let(:leftwing_score) {-40}
+  let(:rightwing_score) {27}
+
+  before do
+    allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
+    allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
+    allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
+  end
 
   describe '#initialize' do
 
@@ -36,6 +41,7 @@ describe Suggestion, :type => :class do
     end
 
     context 'no urls supplied' do
+      subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
 
       it 'defaults to an empty array if no urls are given to make a suggestion' do
         expect(suggestion_no_urls.urls).to be_empty
@@ -45,14 +51,13 @@ describe Suggestion, :type => :class do
   end
 
   describe '#news_source' do
-    let(:leftwing_score) {-40}
-    let(:rightwing_score) {27}
 
-    before do
-      allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
-      allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
-      allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
-    end
+
+    # before do
+    #   allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
+    #   allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
+    #   allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
+    # end
 
     it 'instantiates a new instance of url analysis with the suggestions urls' do
       expect(dummy_url_analysis_klass).to receive(:new).with(dummy_urls)
@@ -77,7 +82,8 @@ describe Suggestion, :type => :class do
         suggestion.news_source
       end
 
-      context '#no urls to analyse' do
+      context '#no urls to analyse/ balanced reading' do
+        subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
 
         before do
           allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(0)
@@ -92,7 +98,40 @@ describe Suggestion, :type => :class do
           expect(suggestion_no_urls).not_to receive(:find_suggestion)
           suggestion_no_urls.news_source
         end
+
+        it 'returns ":balanced" when given no urls or have a score of 0' do
+          expect(suggestion_no_urls.news_source).to eq(:balanced)
+        end
       end
     end
+
+    describe '#find_suggestion' do
+      subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+
+      before do
+        suggestion.news_source
+      end
+
+      it 'fetches the papers hash' do
+        expect(dummy_url_analysis).to receive(:papers)
+        suggestion.find_suggestion(10)
+      end
+
+      it 'selects news sources that match the score you need to be balanced' do
+        expect(suggestion.find_suggestion(-60)).to include(:morningstar)
+        expect(suggestion.find_suggestion(20)).to include(:dailyexpress)
+      end
+
+      it 'returns an array of more than one source if many matches found' do
+        expect(suggestion.find_suggestion(-20)).to include(:independent, :buzzfeed)
+      end
+
+      it 'calls #find_many_suggestions if no single match is found' do
+        expect(suggestion).to receive(:find_many_suggestions).with(10, dummy_papers)
+        suggestion.find_suggestion(10)
+      end
+
+    end
+
   end
 end

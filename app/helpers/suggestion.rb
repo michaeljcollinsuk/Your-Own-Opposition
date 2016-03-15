@@ -25,30 +25,20 @@ attr_reader :url_analysis, :suggested_sources, :urls
 
 
   def find_suggestion(score_needed)
-    papers = url_analysis.papers
-    matches = []
-    papers.select{|source, rating| matches << source if rating == score_needed}
-      if matches.length == 0
-        return 'combo needed'
-      else
-        return matches.pop
-      end
-  #   papers = url_analysis.papers
-  #   if leaning == :right
-  #     right_leaning = papers.keys.keep_if{|source| papers[source] > 0}
-  #     #an array of all the right=wing papers names
-  #     right_leaning.map{|source| papers[source].gcd(score_needed)}
-  #     #an array of all the lowest common multiples
-  #     #find the right paper sources and quantity needed
-  #   else
-  #     #find the left paper sources and quantity needed to get average
-  #   end
+   papers = url_analysis.papers
+   matches = []
+   papers.select{|source, rating| matches << source if rating == score_needed}
+    if matches.length == 0
+      find_many_suggestions(score_needed, papers)
+    else
+      matches
+    end
   end
 
-  #
-  # def left?(current_score)
-  #   return current_score < 0 ? true : false
-  # end
+  def find_many_suggestions(score_needed, papers)
+
+  end
+
 
   # def topic
  # a method to find out the keywords to give to the google news api
