@@ -3,6 +3,8 @@ class UrlCalculator
 
   attr_reader :papers
 
+  attr_accessor :analysed_urls
+
   def initialize(user_urls=[])
     @papers = {dailymail: :right,
               telegraph: :right,
@@ -13,19 +15,20 @@ class UrlCalculator
               huffington_post: :center_left,
               buzzfeed: :left,
               independent: :center_left,
-              the_times: :center_right}
-    @analysed_papers = {}
+              thetimes: :center_right}
+    @analysed_urls = {}
     @user_urls = user_urls
   end
 
 
+  #
+  def url_analyser(url)
+    url.split(".").map!{|keyword| keyword.to_sym}.keep_if{|news_source| papers.has_key? news_source}
+  end
 
-# def url_analyser(url)
-#   papers.each do | paper, stance |
-#     return paper if paper.include? url
-#   end
-# end
-
+  def leniency(url_array)
+    url_array.each{|url| url_analyser(url)}
+  end
 
 end
 
