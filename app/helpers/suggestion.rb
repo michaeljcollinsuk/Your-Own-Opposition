@@ -14,13 +14,12 @@ attr_reader :url_analysis, :suggested_sources, :urls
   end
 
   def eliminate_bias(current_score)
-    score_needed =
-      if urls.length == 0
-        0
-      else
-      (current_score * (urls.length + 1)) / urls.length
-      end
+    if urls.length == 0 || current_score == 0
+      :balanced
+    else
+    score_needed = (current_score * (urls.length + 1)) / urls.length
     find_suggestion(score_needed)
+    end
   end
 
 

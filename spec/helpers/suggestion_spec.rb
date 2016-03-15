@@ -5,6 +5,9 @@ describe Suggestion, :type => :class do
   let(:dummy_url_analysis) {double :dummy_url_analysis}
   let(:dummy_urls) {['a', 'b']}
   subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+  subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
+
+
   let(:dummy_papers) {{dailymail: 100,
                 telegraph: 80,
                 bbc: 5,
@@ -31,6 +34,14 @@ describe Suggestion, :type => :class do
     it 'is instantiated with an array of urls' do
       expect(suggestion.urls).to eq(dummy_urls)
     end
+
+    context 'no urls supplied' do
+
+      it 'defaults to an empty array if no urls are given to make a suggestion' do
+        expect(suggestion_no_urls.urls).to be_empty
+      end
+
+    end
   end
 
   describe '#news_source' do
@@ -38,7 +49,7 @@ describe Suggestion, :type => :class do
     let(:rightwing_score) {27}
 
     before do
-      allow(dummy_url_analysis_klass).to receive(:new).with(dummy_urls).and_return(dummy_url_analysis)
+      allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
       allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
       allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
     end
@@ -64,6 +75,23 @@ describe Suggestion, :type => :class do
       it 'calculates the score you need to balance your current bias score' do
         expect(suggestion).to receive(:find_suggestion).with(-60)
         suggestion.news_source
+      end
+
+      context '#no urls to analyse' do
+
+        before do
+          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(0)
+        end
+
+        it 'does not try to generate a suggestion if no urls have been given' do
+          expect(suggestion_no_urls).not_to receive(:find_suggestion)
+          suggestion_no_urls.news_source
+        end
+
+        it 'does not try to generate a suggestion if you are already balanced' do
+          expect(suggestion_no_urls).not_to receive(:find_suggestion)
+          suggestion_no_urls.news_source
+        end
       end
     end
   end
