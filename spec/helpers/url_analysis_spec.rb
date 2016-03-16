@@ -37,6 +37,10 @@ describe UrlAnalysis, :type => :class do
         expect(url_calculator.user_urls).to be_empty
       end
 
+      it 'has an empty hash to aggregate news source list with % of media diet' do
+        expect(url_calculator.aggregated_news_source_list).to be_empty
+      end
+
 
       context '#initialized with a url array' do
         subject(:url_calculator_used) {described_class.new(user_urls)}
