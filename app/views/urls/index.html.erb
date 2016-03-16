@@ -1,0 +1,20 @@
+<% if @url.any? && current_user %>
+<% @url.each do |url| %>
+
+    <h2> <%= url.name if url.user == current_user%> </h2>
+    <h2> <%= url.link if url.user == current_user%> </h2>
+  <% end %>
+<% else %>
+  No urls yet
+<% end %>
+
+<% if current_user %>
+<p>Add link</p>
+  <%= form_for @url.new do |f| %>
+    <%= f.label :link %>
+    <%= f.text_field :link, required: true %>
+    <%= f.submit %>
+  <% end %>
+<% else %>
+  <p> Sign up to get involved </p>
+<% end %>
