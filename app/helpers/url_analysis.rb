@@ -34,6 +34,7 @@ class UrlAnalysis
   def parse_source_history
     @news_source_list = user_urls.map{|url| parse_source(url)}.flatten
     parse_keywords_history
+
     news_source_list
   end
 
@@ -53,8 +54,6 @@ class UrlAnalysis
   def irrelevant_keyword?(keyword)
     ignore_me_array = ['www', 'http', 'com']
     ignore_me_array.include?(keyword) || keyword.length < 2
-    # keyword == :www || keyword == :http || keyword == :uk || keyword == :com ||
-    # keyword == :com
   end
 
   public
