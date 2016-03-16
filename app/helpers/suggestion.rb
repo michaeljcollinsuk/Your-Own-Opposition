@@ -1,19 +1,29 @@
 class Suggestion
 
-attr_reader :url_analysis, :suggested_sources, :urls, :current_bias
+attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions
 
   def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
     @url_analysis = url_analysis_klass
     @suggested_sources = Hash.new
     @urls = urls
     @current_bias = 0
+    @topic_suggestions = []
   end
+
 
   def news_source
     @url_analysis = url_analysis.new(urls)
     @current_bias = url_analysis.political_leaning_perc
+    suggest_topic
     eliminate_bias
   end
+
+  def suggest_topic
+    top_topics = url_analysis.top_topics
+    perc_threshold = top_topics.values.sort![3]
+    top_topics.each{|topic, perc| @topic_suggestions << topic if perc > perc_threshold }
+  end
+
 
   def eliminate_bias
     if urls.length == 0 || current_bias == 0
