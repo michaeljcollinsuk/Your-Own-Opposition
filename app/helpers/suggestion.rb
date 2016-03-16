@@ -27,7 +27,6 @@ attr_reader :url_analysis, :suggested_sources, :urls
    matches = []
    papers.select{|source, rating| matches << source if rating == score_needed}
     if matches.length == 0
-      # require 'pry'; binding.pry
       find_many_suggestions(score_needed, papers)
     else
       @suggested_sources = {political_jolt: matches}
@@ -37,8 +36,6 @@ attr_reader :url_analysis, :suggested_sources, :urls
 
   def find_many_suggestions(score_needed, papers)
     shortlist = filter_sources(score_needed, papers)
-    # require 'pry'; binding.pry
-
     @suggested_sources =
       shortlist.each{|source, rating| shortlist[source] = score_needed / rating}
     suggested_sources
