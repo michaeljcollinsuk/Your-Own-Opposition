@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gem 'devise'
 
 # angular / rails gem
-gem 'angularjs-rails'
 gem 'angular-rails-templates'
 gem 'bower-rails'
 
