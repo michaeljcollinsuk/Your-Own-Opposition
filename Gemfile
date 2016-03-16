@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+# user setup and login etc.
+gem 'devise'
+
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
@@ -35,6 +39,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :test do
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'shoulda'
 end
 
 group :development, :test do
