@@ -134,45 +134,78 @@ describe Suggestion, :type => :class do
 
     describe '#find_many_suggestions' do
 
-      context '#right wing needed' do
+      context '#right wing suggestions needed' do
+        subject(:suggestion_right) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        let(:shortlist) {{bbc: 5}}
+
         before do
-          suggestion.news_source
+          allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
+          allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
+          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(20/3 + 1)
+          allow(suggestion_right).to receive(:filter_sources).with(10, dummy_papers).and_return(shortlist)
         end
+
+        it 'calls #filter_sources with papers hash and score_needed' do
+          suggestion_right.news_source
+          expect(suggestion_right).to receive(:filter_sources).with(10, dummy_papers)
+          suggestion_right.find_suggestion(10)
+        end
+
+        it 'updates suggested_sources with the site names and number to read' do
+          suggestion_right.news_source
+          expect(suggestion_right.suggested_sources).to eq({bbc: 2})
+        end
+
+      end
+    end
+
+    describe '#filter_sources' do
+
+      context '#left wing needed' do
+        subject(:suggestion_left) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        # let(:shortlist) {{bbc: 5}}
+
+        before do
+          allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
+          allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
+          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(20)
+          suggestion_left.news_source
+        end
+
 
         it 'decides if you need leftwing news based on +ve score needed' do
-          expect(suggestion).to receive(:left_needed?).with(10).and_return(false)
-          suggestion.find_suggestion(10)
+          expect(suggestion_left).to receive(:left_needed?).with(-30).and_return(true)
+          suggestion_left.find_suggestion(-30)
         end
 
-        it 'it calls #filter_sources with ":right"' do
-          expect(suggestion).to receive(:filter_sources).with(:right, dummy_papers)
-          suggestion.find_suggestion(10)
+        it 'it returns only left wing sources with scores smaller than score needed' do
+          expect(suggestion_left.find_suggestion(-50)).to eq({:huffington_post=>1, :buzzfeed=>2, :independent=>2})
         end
+
       end
 
       context '#right wing needed' do
 
+        subject(:suggestion_right) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        let(:shortlist) {{bbc: 5}}
+
         before do
-          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(rightwing_score)
+          allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
+          allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
+          allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(20/3 + 1)
+          suggestion_right.news_source
+        end
+
+        it 'decides you don\'t need leftwing news based on -ve score needed' do
+          expect(suggestion_right).to receive(:left_needed?).and_return(false)
+          suggestion_right.find_suggestion(-10)
+        end
+
+        it 'it filters sources and returns number of right wing articles you need' do
+          expect(suggestion_right.find_suggestion(50)).to eq({:bbc=>10, :dailyexpress=>2})
         end
 
 
-
-        it 'decides if you need leftwing news based on -ve score needed' do
-          expect(suggestion).to receive(:left_needed?).and_return(true)
-          suggestion.news_source
-        end
-
-        xit 'it calls #filter_sources with ":left"' do
-          expect(suggestion).to receive(:filter_sources).with(:left, dummy_papers)
-          suggestion.news_source
-          # suggestion.find_suggestion(-10)
-        end
-      end
-
-
-      xit 'it updates the suggested_sources hash ' do
-        # expect(suggestion.)
       end
     end
   end

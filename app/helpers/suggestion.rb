@@ -27,6 +27,7 @@ attr_reader :url_analysis, :suggested_sources, :urls
    matches = []
    papers.select{|source, rating| matches << source if rating == score_needed}
     if matches.length == 0
+      # require 'pry'; binding.pry
       find_many_suggestions(score_needed, papers)
     else
       @suggested_sources = {political_jolt: matches}
@@ -35,20 +36,24 @@ attr_reader :url_analysis, :suggested_sources, :urls
   end
 
   def find_many_suggestions(score_needed, papers)
-    bias_needed = left_needed?(score_needed) ? :left : :right
+    shortlist = filter_sources(score_needed, papers)
     # require 'pry'; binding.pry
-    filter_sources(bias_needed, papers)
+
+    @suggested_sources =
+      shortlist.each{|source, rating| shortlist[source] = score_needed / rating}
+    suggested_sources
   end
 
   def left_needed?(score_needed)
     score_needed < 0
   end
 
-  def filter_sources(bias_needed, papers)
+  def filter_sources(score_needed, papers)
+    bias_needed = left_needed?(score_needed) ? :left : :right
     if bias_needed == :left
-      #takes keys from hash of left wing papers
+      papers.select{|source, rating| rating < 0 && rating > score_needed}
     else
-      #takes keys from has of right wing papers
+      papers.select{|source, rating| rating > 0 && rating < score_needed}
     end
   end
 
