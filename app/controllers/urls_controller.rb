@@ -15,8 +15,12 @@ class UrlsController < ApplicationController
   end
 
   def show
-    @url = Url.find(3)
-    render json: @url
+    # urls = Url.all
+    # data = []
+    # urls.each { |url| data << url.link }
+    # @response = {source: data[0], tag: data[1], bias: -80}
+    # render json: @response
+    render json: {source: 'Guardian'}
   end
 
 end

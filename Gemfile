@@ -5,8 +5,8 @@ gem 'devise'
 
 # angular / rails gem
 gem 'angularjs-rails'
-
-
+gem 'angular-rails-templates'
+gem 'bower-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
