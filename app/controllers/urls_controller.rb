@@ -14,4 +14,9 @@ class UrlsController < ApplicationController
     params.require(:url).permit(:name, :link)
   end
 
+  def show
+    @url = Url.find(3)
+    render json: @url
+  end
+
 end
