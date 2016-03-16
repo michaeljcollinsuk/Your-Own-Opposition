@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # user setup and login etc.
 gem 'devise'
 
+# angular / rails gem
+gem 'angularjs-rails'
+
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

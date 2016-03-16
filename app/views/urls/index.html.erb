@@ -1,3 +1,4 @@
+<body ng-controller='UrlsController as url'>
 <% if @url.any? && current_user %>
 <% @url.each do |url| %>
 
@@ -15,6 +16,13 @@
     <%= f.text_field :link, required: true %>
     <%= f.submit %>
   <% end %>
+  <div class="container" ng-view>
+    <section>
+      <button ng-click="url.showBias()">Show my bias</button>
+      <h1> {{url.name}} </h1>
+    </section>
+  </div>
 <% else %>
   <p> Sign up to get involved </p>
 <% end %>
+</body>
