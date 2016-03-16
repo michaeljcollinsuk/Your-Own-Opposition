@@ -2,7 +2,7 @@ private
 
 class UrlAnalysis
 
-  attr_reader :news_source_list, :recent_scores
+  attr_reader :news_source_list
 
   def initialize(user_urls= [])
     @papers = {dailymail: 100,
@@ -18,14 +18,15 @@ class UrlAnalysis
               dailyexpress: 20,
               morningstar: -60}
     @news_source_list = Array.new
-    @recent_scores = Array.new
     @user_urls = user_urls
+    @aggregated_news_source_list = Hash.new
   end
 
 
 
   def political_leaning_scores
-    parse_history.each{|source| @recent_scores << papers[source]}
+    recent_scores = []
+    parse_history.each{|source| recent_scores << papers[source]}
     recent_scores
   end
 
@@ -41,7 +42,7 @@ class UrlAnalysis
 
   public
 
-  attr_reader :user_urls, :papers
+  attr_reader :user_urls, :papers, :aggregated_news_source_list
 
   def political_leaning_perc
     (political_leaning_scores.inject(:+)) / news_source_list.length

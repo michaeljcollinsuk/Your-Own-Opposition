@@ -1,16 +1,18 @@
 class Suggestion
 
-attr_reader :url_analysis, :suggested_sources, :urls
+attr_reader :url_analysis, :suggested_sources, :urls, :current_bias
 
   def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
     @url_analysis = url_analysis_klass
     @suggested_sources = {}
     @urls = urls
+    @current_bias = 0
   end
 
   def news_source
     @url_analysis = url_analysis.new(urls)
-    eliminate_bias(url_analysis.political_leaning_perc)
+    @current_bias = url_analysis.political_leaning_perc
+    eliminate_bias(current_bias)
   end
 
   def eliminate_bias(current_score)
