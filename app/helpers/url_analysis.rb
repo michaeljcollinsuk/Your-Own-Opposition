@@ -2,7 +2,6 @@ private
 
 class UrlAnalysis
 
-  attr_reader :news_source_list
 
   def initialize(user_urls= [])
     @papers = {dailymail: 100,
@@ -19,7 +18,7 @@ class UrlAnalysis
               morningstar: -60}
     @news_source_list = Array.new
     @user_urls = user_urls
-    @aggregated_news_source_list = Hash.new
+    @media_diet = Hash.new
   end
 
 
@@ -36,16 +35,27 @@ class UrlAnalysis
   end
 
   def parse(url)
-    url.split(".").map!{|keyword| keyword.to_sym}
-                  .keep_if{|news_source| papers.has_key? news_source}
+    raw_url_array = url.split(/\W/).map!{|keyword| keyword.to_sym}
+
+    raw_url_array.keep_if{|news_source| papers.has_key? news_source}
   end
+
 
   public
 
-  attr_reader :user_urls, :papers, :aggregated_news_source_list
+  attr_reader :user_urls, :papers, :media_diet, :news_source_list
 
   def political_leaning_perc
     (political_leaning_scores.inject(:+)) / news_source_list.length
+  end
+
+  def find_media_diet
+    news_source_list.each do |source|
+      quantity = news_source_list.select{|same_source| source == same_source}.size
+      percentage = (quantity.to_f / news_source_list.size.to_f) * 100
+      media_diet[source] = percentage.to_i
+    end
+    media_diet
   end
 
 end

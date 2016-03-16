@@ -4,7 +4,7 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias
 
   def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
     @url_analysis = url_analysis_klass
-    @suggested_sources = {}
+    @suggested_sources = Hash.new
     @urls = urls
     @current_bias = 0
   end
@@ -12,14 +12,14 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias
   def news_source
     @url_analysis = url_analysis.new(urls)
     @current_bias = url_analysis.political_leaning_perc
-    eliminate_bias(current_bias)
+    eliminate_bias
   end
 
-  def eliminate_bias(current_score)
-    if urls.length == 0 || current_score == 0
+  def eliminate_bias
+    if urls.length == 0 || current_bias == 0
       :balanced
     else
-    score_needed = (current_score * (urls.length + 1)) / urls.length
+    score_needed = (current_bias * (urls.length + 1)) / urls.length
     find_suggestion(score_needed)
     end
   end
@@ -41,21 +41,14 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias
     @suggested_sources =
       shortlist.each do |source, rating|
         quantity = (score_needed / rating).abs
-        shortlist[source] =
-          if quantity > 1
-            quantity
-          else
-            nil
-          end
-    end
+        shortlist[source] = quantity > 1 ? quantity : nil
+      end
     suggested_sources.select{|source, rating| rating != nil}
   end
 
 
   def filter_sources(score_needed, papers)
     bias_needed = left_needed?(score_needed) ? :left : :right
-    # require 'pry'; binding.pry
-
     if bias_needed == :left
       papers.select{|source, rating| rating < 0 && rating < score_needed}
     else

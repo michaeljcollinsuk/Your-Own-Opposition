@@ -64,7 +64,7 @@ describe Suggestion, :type => :class do
     end
 
     it 'calls find_suggestions with the score needed' do
-      expect(suggestion).to receive(:eliminate_bias).with(-40)
+      expect(suggestion).to receive(:eliminate_bias)
       suggestion.news_source
     end
 

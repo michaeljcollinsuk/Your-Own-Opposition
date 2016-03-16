@@ -38,7 +38,7 @@ describe UrlAnalysis, :type => :class do
       end
 
       it 'has an empty hash to aggregate news source list with % of media diet' do
-        expect(url_calculator.aggregated_news_source_list).to be_empty
+        expect(url_calculator.media_diet).to be_empty
       end
 
 
@@ -87,6 +87,18 @@ describe UrlAnalysis, :type => :class do
     it 'returns a score between -100 and 100 for political leniency' do
       expect(url_calculator_used.political_leaning_perc).to eq(26)
     end
+
+  end
+
+  describe '#find_media_diet' do
+    subject(:url_calculator_used) {described_class.new(user_urls)}
+
+
+    it 'uses the news source list to find out number of each article read' do
+      url_calculator_used.political_leaning_perc
+      expect(url_calculator_used.find_media_diet).to eq({dailymail: 33, telegraph: 33, theguardian: 33})
+    end
+
 
   end
 
