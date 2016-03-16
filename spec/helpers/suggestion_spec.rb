@@ -6,17 +6,27 @@ describe Suggestion, :type => :class do
   let(:dummy_urls) {['a', 'b']}
   subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
   let(:dummy_papers) {{dailymail: 100,
-                telegraph: 80,
-                bbc: 5,
-                theguardian: -100,
-                mirror: -80,
-                sun: 100,
-                huffington_post: -40,
-                buzzfeed: -20,
-                independent: -20,
-                thetimes: 60,
-                dailyexpress: 20,
-                morningstar: -60}}
+                        telegraph: 80,
+                        bbc: 5,
+                        theguardian: -100,
+                        mirror: -80,
+                        sun: 100,
+                        huffington_post: -40,
+                        buzzfeed: -20,
+                        independent: -20,
+                        thetimes: 60,
+                        dailyexpress: 20,
+                        morningstar: -60}}
+  let(:dummy_top_topics) {{ osborne: 3,
+                            cameron: 10,
+                            budget: 7,
+                            immigrants: 20,
+                            labour: 20,
+                            corbyn: 15,
+                            nice: 2,
+                            one: 8,
+                            housing: 15
+                            }}
   let(:leftwing_score) {-40}
   let(:rightwing_score) {90}
 
@@ -24,6 +34,8 @@ describe Suggestion, :type => :class do
     allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
     allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
     allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
+    allow(dummy_url_analysis).to receive(:top_topics).and_return(dummy_top_topics)
+
     allow(suggestion).to receive(:left_needed?)
   end
 
@@ -64,8 +76,28 @@ describe Suggestion, :type => :class do
     end
 
     it 'calls find_suggestions with the score needed' do
-      expect(suggestion).to receive(:eliminate_bias).with(-40)
+      expect(suggestion).to receive(:eliminate_bias)
       suggestion.news_source
+    end
+
+    it 'calls suggest topic' do
+      expect(suggestion).to receive(:suggest_topic)
+      suggestion.news_source
+    end
+
+    describe '#suggest_topic' do
+
+      it 'retrieves the top topics from url_analysis' do
+        expect(dummy_url_analysis).to receive(:top_topics)
+        suggestion.news_source
+      end
+
+      it 'updates topic suggestions with any topics that are in the top 3 most read' do
+        suggestion.news_source
+        expect(suggestion.topic_suggestions).to include(:labour, :immigrants, :corbyn, :cameron)
+      end
+
+
     end
 
 
@@ -204,11 +236,7 @@ describe Suggestion, :type => :class do
         it 'it filters sources and returns number of right wing articles you need' do
           expect(suggestion_right.find_suggestion(-50)).to eq({bbc: 10, dailyexpress: 3})
         end
-        # +:dailyexpress => 3,
-        #        +:dailymail => 1,
-        #        +:sun => 1,
-        #        +:telegraph => 1,
-        #        +:thetimes => 1,
+
       end
     end
   end
