@@ -37,21 +37,32 @@ attr_reader :url_analysis, :suggested_sources, :urls
   def find_many_suggestions(score_needed, papers)
     shortlist = filter_sources(score_needed, papers)
     @suggested_sources =
-      shortlist.each{|source, rating| shortlist[source] = score_needed / rating}
-    suggested_sources
+      shortlist.each do |source, rating|
+        quantity = (score_needed / rating).abs
+        shortlist[source] =
+          if quantity > 1
+            quantity
+          else
+            nil
+          end
+    end
+    suggested_sources.select{|source, rating| rating != nil}
   end
 
-  def left_needed?(score_needed)
-    score_needed < 0
-  end
 
   def filter_sources(score_needed, papers)
     bias_needed = left_needed?(score_needed) ? :left : :right
+    # require 'pry'; binding.pry
+
     if bias_needed == :left
-      papers.select{|source, rating| rating < 0 && rating > score_needed}
+      papers.select{|source, rating| rating < 0 && rating < score_needed}
     else
-      papers.select{|source, rating| rating > 0 && rating < score_needed}
+      papers.select{|source, rating| rating > 0 && rating > score_needed}
     end
+  end
+
+  def left_needed?(score_needed)
+    score_needed > 0
   end
 
 

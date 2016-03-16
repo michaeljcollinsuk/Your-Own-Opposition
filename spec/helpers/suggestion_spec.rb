@@ -179,7 +179,7 @@ describe Suggestion, :type => :class do
         end
 
         it 'it returns only left wing sources with scores smaller than score needed' do
-          expect(suggestion_left.find_suggestion(-50)).to eq({:huffington_post=>1, :buzzfeed=>2, :independent=>2})
+          expect(suggestion_left.find_suggestion(50)).to eq({:huffington_post=>2, :buzzfeed=>3, :independent=>3})
         end
 
       end
@@ -202,10 +202,13 @@ describe Suggestion, :type => :class do
         end
 
         it 'it filters sources and returns number of right wing articles you need' do
-          expect(suggestion_right.find_suggestion(50)).to eq({:bbc=>10, :dailyexpress=>2})
+          expect(suggestion_right.find_suggestion(-50)).to eq({bbc: 10, dailyexpress: 3})
         end
-
-
+        # +:dailyexpress => 3,
+        #        +:dailymail => 1,
+        #        +:sun => 1,
+        #        +:telegraph => 1,
+        #        +:thetimes => 1,
       end
     end
   end
