@@ -15,12 +15,6 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     eliminate_bias
   end
 
-  # def news_source
-  #   # @current_bias = url_analysis.political_leaning_perc
-  #   suggest_topic
-  #   eliminate_bias
-  # end
-
   def suggest_topic
     top_topics = url_analysis.top_topics
     perc_threshold = top_topics.values.sort![3]

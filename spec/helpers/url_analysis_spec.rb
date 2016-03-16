@@ -5,7 +5,7 @@ describe UrlAnalysis, :type => :class do
   let(:telegraph_url) {'http://www.telegraph.co.uk/business/2016/03/16/budget-2016-george-osbornes-speech-live0/'}
   let(:guardian_url) {'http://www.theguardian.com/'}
   let(:user_urls) {[daily_mail_url, telegraph_url, guardian_url]}
-  subject(:url_calculator) {described_class.new}
+  subject(:url_calculator) {described_class.new(user_urls)}
 
   subject(:url_calculator_used) {described_class.new(user_urls)}
   let(:papers) {{dailymail: 100,
@@ -29,20 +29,20 @@ describe UrlAnalysis, :type => :class do
         expect(url_calculator.papers).to eq(papers)
       end
 
-      it 'has an empty hash for analysed_urls' do
-        expect(url_calculator.news_source_list).to be_empty
+      it 'has an array for analysed_urls' do
+        expect(url_calculator.news_source_list).to eq([:dailymail, :telegraph, :theguardian])
       end
 
       it 'defaults user_urls input to an empty array if no array supplied' do
-        expect(url_calculator.user_urls).to be_empty
+        expect(url_calculator.user_urls).to eq([daily_mail_url, telegraph_url, guardian_url])
       end
 
-      it 'has an empty hash to aggregate news source list with % of media diet' do
-        expect(url_calculator.media_diet).to be_empty
+      it 'has a hash to aggregate news source list with % of media diet' do
+        expect(url_calculator.media_diet).to eq({:dailymail=>33, :telegraph=>33, :theguardian=>33})
       end
 
-      it 'has an empty hash to aggregate topics list' do
-        expect(url_calculator.media_diet).to be_empty
+      it 'has a hash to hold aggregate topics list' do
+        expect(url_calculator.top_topics).to include(:osborne, :speech)
       end
 
 
@@ -73,10 +73,7 @@ describe UrlAnalysis, :type => :class do
 
   describe '#parse_source_history' do
 
-    it 'calls parse_keywords_history in order to update the topics list' do
-      expect(url_calculator_used).to receive(:parse_keywords_history)
-      url_calculator_used.parse_source_history
-    end
+
 
     it 'updates the news_source_list with the names of the matching news sources of urls' do
       url_calculator_used.parse_source_history
