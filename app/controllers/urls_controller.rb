@@ -14,15 +14,16 @@ class UrlsController < ApplicationController
     params.require(:url).permit(:name, :link)
   end
 
-  # def show
-  #   # urls = Url.all
-  #   # data = []
-  #   # urls.each { |url| data << url.link }
-  #   # @response = {source: data[0], tag: data[1], bias: -80}
-  #   # render json: @response
-  #   @url = Url.all
-  #   # byebug
-  #   render json: {source: 'Guardian'}
-  # end
+  def show
+    # urls = Url.all
+    # @response = {source: data[0], tag: data[1], bias: -80}
+    # render json: @response
+    data = []
+    urls = current_user.urls.all
+    urls.each { |url| data << url.link }
+    suggestion = Suggestion.new(UrlAnalysis, data)
+    suggestion.news_source
+    render json: suggestion
+  end
 
 end
