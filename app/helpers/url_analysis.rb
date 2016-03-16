@@ -25,16 +25,16 @@ class UrlAnalysis
 
   def political_leaning_scores
     recent_scores = []
-    parse_history.each{|source| recent_scores << papers[source]}
+    parse_source_history.each{|source| recent_scores << papers[source]}
     recent_scores
   end
 
-  def parse_history
-    @news_source_list = user_urls.map!{|url| parse(url)}.flatten!
+  def parse_source_history
+    @news_source_list = user_urls.map!{|url| parse_source(url)}.flatten!
     news_source_list
   end
 
-  def parse(url)
+  def parse_source(url)
     raw_url_array = url.split(/\W/).map!{|keyword| keyword.to_sym}
 
     raw_url_array.keep_if{|news_source| papers.has_key? news_source}

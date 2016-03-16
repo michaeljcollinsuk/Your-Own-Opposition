@@ -53,22 +53,22 @@ describe UrlAnalysis, :type => :class do
 
     end
 
-  describe '#parse(url)' do
+  describe '#parse_source(url)' do
 
     it 'matches a single url to the main news source name' do
-      expect(url_calculator.parse(daily_mail_url)).to include(:dailymail)
+      expect(url_calculator.parse_source(daily_mail_url)).to include(:dailymail)
     end
 
     it 'matches urls against a list of source names' do
-      expect(url_calculator.parse(telegraph_url)).to include(:telegraph)
+      expect(url_calculator.parse_source(telegraph_url)).to include(:telegraph)
     end
 
   end
 
-  describe '#parse_history' do
+  describe '#parse_source_history' do
 
     it 'updates the news_source_list with the names of the matching news sources of urls' do
-      url_calculator_used.parse_history
+      url_calculator_used.parse_source_history
       expect(url_calculator_used.news_source_list).to include(:telegraph, :dailymail, :theguardian)
     end
 
