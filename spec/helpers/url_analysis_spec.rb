@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe UrlAnalysis, :type => :class do
-  let(:daily_mail_url) {'http://www.dailymail.co.uk/home/index.html'}
-  let(:telegraph_url) {'http://www.telegraph.co.uk/'}
+  let(:daily_mail_url) {'http://www.dailymail.co.uk/news/article-3494714/George-Osborne-warn-storm-clouds-gathering-economy-today-s-Budget-generation-money-schools-infrastructure.html'}
+  let(:telegraph_url) {'http://www.telegraph.co.uk/business/2016/03/16/budget-2016-george-osbornes-speech-live0/'}
   let(:guardian_url) {'http://www.theguardian.com/'}
   let(:user_urls) {[daily_mail_url, telegraph_url, guardian_url]}
   subject(:url_calculator) {described_class.new}
@@ -41,6 +41,10 @@ describe UrlAnalysis, :type => :class do
         expect(url_calculator.media_diet).to be_empty
       end
 
+      it 'has an empty hash to aggregate topics list' do
+        expect(url_calculator.media_diet).to be_empty
+      end
+
 
       context '#initialized with a url array' do
         subject(:url_calculator_used) {described_class.new(user_urls)}
@@ -65,14 +69,41 @@ describe UrlAnalysis, :type => :class do
 
   end
 
+
+
   describe '#parse_source_history' do
+
+    it 'calls parse_keywords_history in order to update the topics list' do
+      expect(url_calculator_used).to receive(:parse_keywords_history)
+      url_calculator_used.parse_source_history
+    end
 
     it 'updates the news_source_list with the names of the matching news sources of urls' do
       url_calculator_used.parse_source_history
       expect(url_calculator_used.news_source_list).to include(:telegraph, :dailymail, :theguardian)
     end
 
+
+
   end
+
+  describe '#parse_keywords_history' do
+
+    before do
+      url_calculator_used.parse_source_history
+    end
+
+    it 'returns an array of keywords as topics' do
+      expect(url_calculator_used.topics_list).to include(:osborne)
+    end
+
+    it 'calls parse_source_history so to remove news sources from list' do
+      expect(url_calculator_used.topics_list).not_to include(:telegraph)
+      expect(url_calculator_used.topics_list).not_to include(:dailymail)
+    end
+
+  end
+
 
   describe '#list_political_leaning_scores' do
 
@@ -94,9 +125,16 @@ describe UrlAnalysis, :type => :class do
     subject(:url_calculator_used) {described_class.new(user_urls)}
 
 
-    it 'uses the news source list to find out number of each article read' do
+    it 'can use the news source list to find out number of each article read' do
       url_calculator_used.political_leaning_perc
-      expect(url_calculator_used.find_media_diet).to eq({dailymail: 33, telegraph: 33, theguardian: 33})
+      news_source_list = url_calculator_used.news_source_list
+      expect(url_calculator_used.find_media_diet(news_source_list)).to eq({dailymail: 33, telegraph: 33, theguardian: 33})
+    end
+
+    it 'can also use the keyword list to find out how much of one topic read' do
+      url_calculator_used.political_leaning_perc
+      topics_list = url_calculator_used.topics_list
+      expect(url_calculator_used.find_media_diet(topics_list)).to include({osborne: 0})
     end
 
 
