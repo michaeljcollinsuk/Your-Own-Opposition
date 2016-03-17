@@ -1,6 +1,6 @@
 class Suggestion
 
-attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions
+attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions, :best_suggestion
 
   def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
     @url_analysis = url_analysis_klass.new(urls)
@@ -8,6 +8,7 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     @urls = urls
     @current_bias = url_analysis.political_leaning_perc
     @topic_suggestions = []
+    @best_suggestion = nil
   end
 
   def make_suggestion
@@ -50,7 +51,9 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
         quantity = (score_needed / rating).abs
         shortlist[source] = quantity > 1 ? quantity : nil
       end
-    suggested_sources.select{|source, rating| rating != nil}
+    suggested_sources.select!{|source, number| number if number != nil}
+    fewest_needed = suggested_sources.values.sort[0]
+    @best_suggestion = suggested_sources.select{|source, number| number == fewest_needed}
   end
 
 
