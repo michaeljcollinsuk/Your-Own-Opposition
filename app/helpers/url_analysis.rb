@@ -13,7 +13,7 @@ class UrlAnalysis
               buzzfeed: -20,
               independent: -20,
               thetimes: 60,
-              dailyexpress: 20,
+              express: 20,
               morningstar: -60}
     @user_urls = user_urls
     @news_source_list = parse_source_history

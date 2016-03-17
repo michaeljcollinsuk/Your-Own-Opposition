@@ -11,4 +11,9 @@ feature 'suggestions' do
     visit '/suggestions'
     expect(page).to have_content 'dailymail'
   end
+
+  # scenario 'it responds with a suggestion' do
+  #   visit '/suggestions'
+  #   expect(page).to have_content 'dailymail'
+  # end
 end
