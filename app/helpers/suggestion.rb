@@ -13,6 +13,7 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
 
   def make_suggestion
     suggest_topic
+    @best_suggestion = find_best_suggestion
     eliminate_bias
   end
 
@@ -52,8 +53,11 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
         shortlist[source] = quantity > 1 ? quantity : nil
       end
     suggested_sources.select!{|source, number| number if number != nil}
+  end
+
+  def find_best_suggestion
     fewest_needed = suggested_sources.values.sort[0]
-    @best_suggestion = suggested_sources.select{|source, number| number == fewest_needed}
+    suggested_sources.select{|source, number| number == fewest_needed}
   end
 
 

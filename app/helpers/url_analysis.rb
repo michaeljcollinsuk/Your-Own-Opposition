@@ -56,7 +56,7 @@ class UrlAnalysis
 
   def irrelevant_keyword?(keyword)
     ignore_me_array = ['www', 'http', 'com']
-    ignore_me_array.include?(keyword) || keyword.length < 4
+    ignore_me_array.include?(keyword) || keyword.length < 2
   end
 
   def find_media_diet(source_or_topic)
