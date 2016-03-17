@@ -15,7 +15,7 @@ describe Suggestion, :type => :class do
                         buzzfeed: -20,
                         independent: -20,
                         thetimes: 60,
-                        dailyexpress: 20,
+                        express: 20,
                         morningstar: -60}}
   let(:dummy_top_topics) {{ osborne: 3,
                             cameron: 10,
@@ -144,7 +144,7 @@ describe Suggestion, :type => :class do
 
       it 'selects news sources that match the score you need to be balanced' do
         expect(suggestion.find_suggestion(-60)).to include(:morningstar)
-        expect(suggestion.find_suggestion(20)).to include(:dailyexpress)
+        expect(suggestion.find_suggestion(20)).to include(:express)
       end
 
       it 'returns an array of more than one source if many matches found' do
@@ -233,7 +233,7 @@ describe Suggestion, :type => :class do
         end
 
         it 'it filters sources and returns number of right wing articles you need' do
-          expect(suggestion_right.find_suggestion(-50)).to eq({bbc: 10, dailyexpress: 3})
+          expect(suggestion_right.find_suggestion(-50)).to eq({bbc: 10, express: 3})
         end
 
       end

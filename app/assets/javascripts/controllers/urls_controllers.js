@@ -44,8 +44,6 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
    self.suggestionsLoaded = false;
  };
 
-// debugger;
-
 
  self.articleLoaded = false;
  self.getSuggestions = function() {

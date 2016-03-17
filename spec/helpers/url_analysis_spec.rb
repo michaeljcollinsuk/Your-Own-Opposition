@@ -42,7 +42,7 @@ describe UrlAnalysis, :type => :class do
       end
 
       it 'has a hash to hold aggregate topics list' do
-        expect(url_calculator.top_topics).to include([:osborne, 0] => 0)
+        expect(url_calculator.top_topics).to include(:osborne => 4, :warn => 4, :storm => 4, :clouds => 4)
       end
 
 
@@ -131,7 +131,7 @@ describe UrlAnalysis, :type => :class do
     it 'can also use the keyword list to find out how much of one topic read' do
       url_calculator_used.political_leaning_perc
       topics_list = url_calculator_used.topics_list
-      expect(url_calculator_used.find_media_diet(topics_list)).to include([:osborne, 0] => 0)
+      expect(url_calculator_used.find_media_diet(topics_list)).to include(:osborne => 4, :warn => 4, :storm => 4, :clouds => 4)
     end
 
 
