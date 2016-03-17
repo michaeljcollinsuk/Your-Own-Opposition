@@ -8,4 +8,5 @@ class SuggestionsController < ApplicationController
     suggestion.make_suggestion
     render json: suggestion.suggested_sources
   end
+  
 end
