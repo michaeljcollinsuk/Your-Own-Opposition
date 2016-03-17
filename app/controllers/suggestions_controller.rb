@@ -6,7 +6,7 @@ class SuggestionsController < ApplicationController
     urls.each { |url| data << url.link }
     suggestion = Suggestion.new(UrlAnalysis, data)
     suggestion.make_suggestion
-    render json: suggestion.suggested_sources
+    render json: suggestion
   end
-  
+
 end
