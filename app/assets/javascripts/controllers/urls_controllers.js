@@ -7,6 +7,17 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var suggestionsResponse = [];
   var articles = [];
   var keyword = "";
+  var urls = [];
+
+  self.showRecentUrls = function() {
+    self.userUrlsLoaded = true;
+    analysisResource.get().$promise.then(function(data){
+      self.urls = data.user_urls;
+      // .forEach( function(s) {
+      //  [].push(s);
+      // });
+    });
+  };
 
   self.showBias = function() {
     self.loaded = true;

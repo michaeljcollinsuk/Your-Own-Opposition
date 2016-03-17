@@ -143,17 +143,13 @@ describe Suggestion, :type => :class do
       end
 
       it 'selects news sources that match the score you need to be balanced' do
-        expect(suggestion.find_suggestion(-60)).to include(:morningstar)
-        expect(suggestion.find_suggestion(20)).to include(:express)
+        suggestion.find_suggestion(-60)
+        expect(suggestion.best_suggestion).to include(:morningstar)
       end
 
-      it 'returns an array of more than one source if many matches found' do
-        expect(suggestion.find_suggestion(-20)).to include(:independent, :buzzfeed)
-      end
-
-      it 'updates the suggested_sources hash with suggestions for political jolt' do
+      it 'whittles down to just one suggestion if two exact matches found' do
         suggestion.find_suggestion(-20)
-        expect(suggestion.suggested_sources[:political_jolt]).to eq([:buzzfeed, :independent])
+        expect(suggestion.best_suggestion).to eq({independent: 1})
       end
 
       it 'calls #find_many_suggestions if no single match is found' do
@@ -210,7 +206,8 @@ describe Suggestion, :type => :class do
         end
 
         it 'it returns only left wing sources with scores smaller than score needed' do
-          expect(suggestion_left.find_suggestion(50)).to eq({:huffington_post=>2, :buzzfeed=>3, :independent=>3})
+          suggestion_left.find_suggestion(50)
+          expect(suggestion_left.suggested_sources).to eq({:huffington_post=>2, :buzzfeed=>3, :independent=>3})
         end
 
       end
@@ -233,7 +230,8 @@ describe Suggestion, :type => :class do
         end
 
         it 'it filters sources and returns number of right wing articles you need' do
-          expect(suggestion_right.find_suggestion(-50)).to eq({bbc: 10, express: 3})
+          suggestion_right.find_suggestion(-50)
+          expect(suggestion_right.suggested_sources).to eq({bbc: 10, express: 3})
         end
 
       end
