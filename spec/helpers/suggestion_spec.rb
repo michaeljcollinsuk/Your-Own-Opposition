@@ -41,8 +41,8 @@ describe Suggestion, :type => :class do
 
   describe '#initialize' do
 
-    it 'is instantiated with a UrlCalculator klass' do
-      expect(suggestion.url_analysis).to eq(dummy_url_analysis_klass)
+    it 'is instantiated with an instance of url analysis' do
+      expect(suggestion.url_analysis).to eq(dummy_url_analysis)
     end
 
     it 'is instantiated with an empty hash of suggested sources' do
@@ -51,6 +51,10 @@ describe Suggestion, :type => :class do
 
     it 'is instantiated with an array of urls' do
       expect(suggestion.urls).to eq(dummy_urls)
+    end
+
+    it 'retrieves current_bias score' do
+      expect(suggestion.current_bias).to eq(leftwing_score)
     end
 
     context 'no urls supplied' do
@@ -63,37 +67,32 @@ describe Suggestion, :type => :class do
     end
   end
 
-  describe '#news_source' do
+  describe '#make_suggestion' do
 
-    it 'instantiates a new instance of url analysis with the suggestions urls' do
-      expect(dummy_url_analysis_klass).to receive(:new).with(dummy_urls)
-      suggestion.news_source
-    end
-
-    it 'calculates the score needed based on current political leaning score' do
-      expect(dummy_url_analysis).to receive(:political_leaning_perc)
-      suggestion.news_source
-    end
+    # it 'calculates the score needed based on current political leaning score' do
+    #   expect(dummy_url_analysis).to receive(:political_leaning_perc)
+    #   suggestion.make_suggestion
+    # end
 
     it 'calls find_suggestions with the score needed' do
       expect(suggestion).to receive(:eliminate_bias)
-      suggestion.news_source
+      suggestion.make_suggestion
     end
 
     it 'calls suggest topic' do
       expect(suggestion).to receive(:suggest_topic)
-      suggestion.news_source
+      suggestion.make_suggestion
     end
 
     describe '#suggest_topic' do
 
       it 'retrieves the top topics from url_analysis' do
         expect(dummy_url_analysis).to receive(:top_topics)
-        suggestion.news_source
+        suggestion.make_suggestion
       end
 
       it 'updates topic suggestions with any topics that are in the top 3 most read' do
-        suggestion.news_source
+        suggestion.make_suggestion
         expect(suggestion.topic_suggestions).to include(:labour, :immigrants, :corbyn, :cameron)
       end
 
@@ -105,7 +104,7 @@ describe Suggestion, :type => :class do
 
       it 'calculates the score you need to balance your current bias score' do
         expect(suggestion).to receive(:find_suggestion).with(-60)
-        suggestion.news_source
+        suggestion.make_suggestion
       end
 
       context '#no urls to analyse/ balanced reading' do
@@ -117,16 +116,16 @@ describe Suggestion, :type => :class do
 
         it 'does not try to generate a suggestion if no urls have been given' do
           expect(suggestion_no_urls).not_to receive(:find_suggestion)
-          suggestion_no_urls.news_source
+          suggestion_no_urls.make_suggestion
         end
 
         it 'does not try to generate a suggestion if you are already balanced' do
           expect(suggestion_no_urls).not_to receive(:find_suggestion)
-          suggestion_no_urls.news_source
+          suggestion_no_urls.make_suggestion
         end
 
         it 'returns ":balanced" when given no urls or have a score of 0' do
-          expect(suggestion_no_urls.news_source).to eq(:balanced)
+          expect(suggestion_no_urls.make_suggestion).to eq(:balanced)
         end
       end
     end
@@ -135,7 +134,7 @@ describe Suggestion, :type => :class do
       subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
 
       before do
-        suggestion.news_source
+        suggestion.make_suggestion
       end
 
       it 'fetches the papers hash' do
@@ -178,13 +177,13 @@ describe Suggestion, :type => :class do
         end
 
         it 'calls #filter_sources with papers hash and score_needed' do
-          suggestion_right.news_source
+          suggestion_right.make_suggestion
           expect(suggestion_right).to receive(:filter_sources).with(10, dummy_papers)
           suggestion_right.find_suggestion(10)
         end
 
         it 'updates suggested_sources with the site names and number to read' do
-          suggestion_right.news_source
+          suggestion_right.make_suggestion
           expect(suggestion_right.suggested_sources).to eq({bbc: 2})
         end
 
@@ -201,7 +200,7 @@ describe Suggestion, :type => :class do
           allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
           allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
           allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(20)
-          suggestion_left.news_source
+          suggestion_left.make_suggestion
         end
 
 
@@ -225,7 +224,7 @@ describe Suggestion, :type => :class do
           allow(dummy_url_analysis_klass).to receive(:new).and_return(dummy_url_analysis)
           allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
           allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(20/3 + 1)
-          suggestion_right.news_source
+          suggestion_right.make_suggestion
         end
 
         it 'decides you don\'t need leftwing news based on -ve score needed' do
