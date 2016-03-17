@@ -1,0 +1,19 @@
+{
+  "name": "opposing_views",
+  "version": "1.0.0",
+  "description": "Helping people to read between enemy lines, since 2016",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start spec/javascripts/karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViolaCrellin/Your-Own-Opposition.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViolaCrellin/Your-Own-Opposition/issues"
+  },
+  "homepage": "https://github.com/ViolaCrellin/Your-Own-Opposition#readme"
+}

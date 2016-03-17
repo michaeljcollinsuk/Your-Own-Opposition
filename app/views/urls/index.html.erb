@@ -20,10 +20,18 @@
     <section>
       <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
       <button ng-show="url.loaded" ng-click="url.hideBias()">Hide my bias</button>
-      <h1 ng-show="url.loaded"> My bias rating: {{url.response.current_bias}} </h1>
+      <h1 ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} </h1>
       <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()">Show my media diet</button>
+      <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()">Hide my media diet</button>
+      <h1 ng-show="url.furtherInfoLoaded"> My media diet: {{url.breakdownResponse}} </h1>
 
-      <h1 ng-show="url.furtherInfoLoaded"> My media diet: {{url.response.media_diet}} </h1>
+    </section>
+
+    <section>
+      <button ng-hide="url.suggestionsLoaded" ng-click="url.showSuggestions()">What paper should I read?</button>
+      <button ng-show="url.suggestionsLoaded" ng-click="url.showSuggestions()">Get me an article</button>
+
+      <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
 
     </section>
   </div>

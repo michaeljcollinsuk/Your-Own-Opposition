@@ -38,10 +38,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'protractor-rails'
+
 group :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'shoulda'
+
 end
 
 group :development, :test do
