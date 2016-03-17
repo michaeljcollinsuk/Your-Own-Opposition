@@ -35,17 +35,16 @@
     </section>
 
     <section>
-      <button ng-hide="url.suggestionsLoaded" ng-hide="url.articleLoaded" ng-click="url.showSuggestions()">What paper should I read?</button>
+      <div ng-hide="url.searchingForLink">
+      <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
-
       <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
-      <a ng-show="url.articleLoaded" href="{{url.articles}}">Click Me</a>
+    </div>
+      <h1 ng-show="url.searchingForLink"> Crunching the numbers... </h1>
+      <a ng-show="url.articleLoaded" href="{{url.articles}}" ng-click="url.saveThis">Click Me</a>
+    </div>
+    </section>
 
-    </section>
-    <section>
-      <!-- <button ng-click="url.getSuggestions()">Get me an article</button> -->
-    </section>
-  </div>
 <% else %>
   <p> Sign up to get involved </p>
 <% end %>
