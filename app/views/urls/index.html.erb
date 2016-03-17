@@ -12,9 +12,9 @@
 <% else %>
   No urls yet
 <% end %>
-
-<% if current_user %>
 </aside>
+<% if current_user %>
+
 
 <p>Add link</p>
   <%= form_for @url.new do |f| %>
@@ -35,15 +35,15 @@
     </section>
 
     <section>
-      <button ng-hide="url.suggestionsLoaded" ng-click="url.showSuggestions()">What paper should I read?</button>
-      <button ng-show="url.suggestionsLoaded" ng-click="url.hideSuggestions()">Hide suggestions</button>
+      <button ng-hide="url.suggestionsLoaded" ng-hide="url.articleLoaded" ng-click="url.showSuggestions()">What paper should I read?</button>
+      <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
 
       <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
+      <a ng-show="url.articleLoaded" href="{{url.articles}}">Click Me</a>
 
     </section>
     <section>
-      <button ng-click="url.getSuggestions()">Get me an article</button>
-      <a ng-show="url.articleLoaded" href="{{url.articles}}">Click Me</a>
+      <!-- <button ng-click="url.getSuggestions()">Get me an article</button> -->
     </section>
   </div>
 <% else %>
