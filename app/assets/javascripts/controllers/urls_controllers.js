@@ -1,14 +1,15 @@
 UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var self = this;
 
-  var suggestionsResource = $resource('http://localhost:3000/urls/1');
-  var response = [];
+  var analysisResource = $resource('http://localhost:3000/analysis');
+  var analysisResponse = [];
+  var breakdownResponse = [];
+  var suggestionsResponse = [];
 
   self.showBias = function() {
     self.loaded = true;
-    suggestionsResource.get().$promise.then(function(data){
-      self.response = data;
-      console.log(self.response.current_bias);
+    analysisResource.get().$promise.then(function(data){
+      self.analysisResponse = data.current_bias;
     });
   };
 
@@ -18,10 +19,22 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
 
   self.showBreakDown = function(){
     self.furtherInfoLoaded = true;
-    suggestionsResource.get().$promise.then(function(data){
-      self.response = data.url_analysis;
-      console.log(self.response);
+    analysisResource.get().$promise.then(function(data){
+      self.breakdownResponse = data.media_diet;
   });
+
+  self.hideBreakDown = function() {
+    self.furtherInfoLoaded = false;
+  };
 };
+
+ var suggestionsResource = $resource('http://localhost:3000/suggestions');
+
+ self.showSuggestions = function() {
+   self.suggestionsLoaded = true;
+   suggestionsResource.get().$promise.then(function(data){
+     self.suggestionsResponse = data;
+   });
+ };
 
 }]);
