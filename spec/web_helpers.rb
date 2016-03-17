@@ -20,6 +20,11 @@ def create_url
   click_button 'Create Url'
 end
 
+def create_url2
+  fill_in 'Link', with: 'http://www.theguardian.com/politics/blog/live/2016/mar/17/budget-2016-george-osborne-today-interview-politics-live.com'
+  click_button 'Create Url'
+end
+
 def signup2
   visit('/')
   click_link('Sign up')
