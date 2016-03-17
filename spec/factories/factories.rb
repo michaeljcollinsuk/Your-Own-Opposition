@@ -14,6 +14,10 @@ FactoryGirl.define do
     trait :password do
       password 'password'
     end
+    trait :password_confirmation do
+      password 'password'
+    end
+
   end
 
   # factory :daily_mail_user do
