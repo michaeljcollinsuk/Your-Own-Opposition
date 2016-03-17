@@ -1,9 +1,8 @@
-# private
+private
 
 class UrlAnalysis
 
-
-  def initialize(user_urls= [])
+  def initialize(user_urls= Array.new)
     @papers = {dailymail: 100,
               telegraph: 80,
               bbc: 5,
@@ -34,14 +33,11 @@ class UrlAnalysis
     (political_leaning_scores.inject(:+)) / news_source_list.length
   end
 
-
   def political_leaning_scores
     recent_scores = []
     news_source_list.each{|source| recent_scores << papers[source]}
     recent_scores
   end
-
-
 
   def parse_source(url)
     parse(url).keep_if{|news_source| papers.has_key? news_source}
@@ -58,17 +54,8 @@ class UrlAnalysis
 
   def irrelevant_keyword?(keyword)
     ignore_me_array = ['www', 'http', 'com']
-    ignore_me_array.include?(keyword) || keyword.length < 2
+    ignore_me_array.include?(keyword) || keyword.length < 4
   end
-
-
-
-
-  # public
-
-  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics
-
-
 
   def find_media_diet(source_or_topic)
     media_analysed = Hash.new
@@ -80,6 +67,8 @@ class UrlAnalysis
     media_analysed
   end
 
+  public
 
+  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics
 
 end
