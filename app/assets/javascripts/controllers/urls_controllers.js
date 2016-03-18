@@ -16,6 +16,9 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var keyword = "";
   var topicKeywords = [];
   var topKeywords = [];
+  var mostRelevant = [];
+  var topicValues = [];
+
 
   self.showRecentUrls = function() {
     self.userUrlsLoaded = true;
@@ -64,10 +67,7 @@ var urlsResource = $resource('http://localhost:3000/urls');
      self.topicSuggestionsResponse = data.url_analysis.top_topics;
      self.suggestionsResponse = data.best_suggestion;
      self.keyword = Object.keys(self.suggestionsResponse)[0];
-     self.topicKeywords = Object.keys(self.topicSuggestionsResponse);
-     debugger;
-     self.topKeywords.push(self.topicSuggestionsResponse[self.topicKeywords]).sort();
-
+     self.topicKeyword = Object.keys(data.url_analysis.top_topic)[0];
    });
  };
 
