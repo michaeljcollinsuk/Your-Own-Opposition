@@ -12,7 +12,7 @@
   <button ng-show="url.userUrlsLoaded" ng-click="url.hideRecentUrls()">Hide what I've read recently</button>
 <aside ng-show="url.userUrlsLoaded" >
 <div id='urls'>
-<% @url.each do |url| %>
+<% current_user.urls.each do |url| %>
   <ul>
     <!-- <p><a href='<%= url.name if url.user == current_user%>'></a></p> -->
     <p><a href='<%= url.link if url.user == current_user%>'> <%= url.link %></a></p>
@@ -43,16 +43,18 @@
 
 
     <section class=suggestion>
-      <div ng-hide="url.searchingForLink">
+      <!-- <div ng-hide="url.searchingForLink"> -->
       <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
       <div id='suggestions' ng-show="url.suggestionsLoaded" ng-repeat="keyword in url.keywords track by $index"> We suggest that you read {{url.numberToRead[$index]}} articles from {{keyword}} </h1>
-    </div class="suggestion-served">
+    </div>
     <div id='crunching_numbers' ng-show="url.searchingForLink"> Crunching the numbers... </div>
-    <aside ng-show="url.articleLoaded" ng-repeat="urlLink in url.urlLinks track by $index | limitTo:quantity">
+    <aside id="suggestion-served" ng-show="url.articleLoaded" ng-repeat="urlLink in url.urlLinks track by $index | limitTo:quantity">
       <a ng-show="url.articleLoaded" href="{{urlLink}}">
+        <p id="thislink" >{{url.articleTitles[$index]}}</p>
+        <aside id="article-image">
         <img id="article-image" src={{url.articleImages[$index]}} alt="article-image">
-        {{url.articleTitles[$index]}}
+      </aside>
       </a>
     </div>
     </section>

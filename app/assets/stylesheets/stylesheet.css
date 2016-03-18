@@ -45,7 +45,7 @@ p{
 }
 
 a:link {
-    color: black;
+    color: rgb(3, 180, 199);
 }
 
 a:visited {
@@ -54,7 +54,7 @@ a:visited {
 
 #urls {
   background-color: rgba(214, 242, 219, 0.88);
-
+  color: rgb(250, 130, 122);
   font-size: 15px;
   padding: 15px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
@@ -64,6 +64,8 @@ a:visited {
 }
 
 #show_bias {
+  background-color: rgba(214, 242, 219, 0.88);
+  color: rgb(250, 130, 122);
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 55px;
@@ -74,6 +76,8 @@ a:visited {
   margin: auto;
 }
 #show_diet {
+  background-color: rgba(214, 242, 219, 0.88);
+  color: rgb(250, 130, 122);
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 55px;
@@ -84,6 +88,9 @@ a:visited {
   margin: auto;
 }
 #show_suggest {
+  background-color: rgba(214, 242, 219, 0.88);
+  color: rgb(250, 130, 122);
+
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 55px;
@@ -94,10 +101,16 @@ a:visited {
   margin: auto;
 }
 #click_me {
+  background-color: rgba(214, 242, 219, 0.88);
+  color: rgb(250, 130, 122);
+
   font-family: Lobster, Serif;
   font-size: 10pt;
 }
 #crunching_numbers {
+  background-color: rgba(214, 242, 219, 0.88);
+  color: rgb(250, 130, 122);
+
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 20px;
@@ -108,6 +121,8 @@ a:visited {
   margin: auto;
 }
 #suggestions {  font-family: Lobster, Serif;
+  color: rgb(250, 130, 122);
+  background-color: rgba(214, 242, 219, 0.88);
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
@@ -156,6 +171,19 @@ input[type=text]{
  line-height: 200%;
 }
 
+#user_email{
+  align-self: center;
+  text-align: right;
+ background: url(http://i.stack.imgur.com/ynxjD.png) repeat-y;
+ width: 75%;
+ max-width: 500px;
+ height: 10%;
+ max-height: 50px;
+ font-family: 'Gruppo';
+ font-size: 100%;
+ line-height: 200%;
+}
+
 input[type=password]{
   align-self: center;
   text-align: right;
@@ -182,4 +210,41 @@ button:hover {
 button:active {
   position:relative;
   top:1px;
+}
+
+#suggestion-served {
+  text-align: center;
+  color: rgb(250, 130, 122);
+  background-color: rgba(214, 242, 219, 0.88);
+  font-size: 15px;
+  padding: 15px;
+  box-shadow: 1px 0 3px rgba(0,0,0, 1);
+  border-radius: 500px;
+  width: 50%;
+  margin-top: 5%;
+  margin-right: 25%;
+  margin-left: 25%;
+}
+
+#article-image {
+  align-self: center;
+  background-color: white;
+  border: 1px solid #68a54b;
+  border-radius: 100px;
+  -moz-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  text-align: center;
+  img { width: 100% }
+}
+
+#thislink {
+  max-width: 25%;
+  position: absolute;
+  text-align: left;
+  text-overflow: ellipsis;
+  margin-left: 210px;
+  margin-right: 50px;
 }
