@@ -1,7 +1,6 @@
 
 UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var self = this;
-
   var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
   var breakdownResponse = [];
@@ -9,18 +8,17 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var percentageRead = [];
   var suggestionsResponse = [];
   var sourceSuggestion = [];
-  var articleTitle = "";
-  var articles = [];
-  var img = "";
-  var title = "";
-  var urlLink = "";
+  var urlLinks = [];
+  var articleImages = [];
+  var articleTitles = [];
   var keywords = [];
   var keyword = "";
   var topicKeywords = [];
   var topKeywords = [];
   var mostRelevant = [];
   var topicValues = [];
-  var numberToRead = "";
+  var numberToRead = [];
+  var quantity = "";
 
 
   self.showRecentUrls = function() {
@@ -70,14 +68,14 @@ var urlsResource = $resource('http://localhost:3000/urls');
      self.topicSuggestionsResponse = data.url_analysis.top_topics;
      self.suggestionsResponse = data.best_suggestion;
      self.keywords = Object.keys(self.suggestionsResponse);
-     self.numberToRead =
-     self.keywords.map(function (key) {
-     return self.suggestionsResponse[key];
- });
+     self.numberToRead = self.keywords.map(function (key) {
+       return self.suggestionsResponse[key];
+     });
      self.keyword = self.keywords[0];
      self.topicKeyword = Object.keys(data.url_analysis.top_topic)[0];
    });
  };
+
 
 
  self.articleLoaded = false;
@@ -86,14 +84,23 @@ var urlsResource = $resource('http://localhost:3000/urls');
    self.searchingForLink = true;
   var webhoseResource = $resource("https://webhose.io/search?token=b68bbb9d-dd4d-4179-95c1-d60a3cdbd303&format=json&q=politics%20" + self.topicKeyword + "%20site%3A"+ self.keyword + ".co.uk");
    webhoseResource.get().$promise.then(function(data) {
-     self.articles = data.posts;
-     self.urlLink = data.posts[0].url;
-     self.image = data.posts[0].img;
-     self.articleTitle = data.posts[0].title;
      self.articleLoaded = true;
+     self.articles = data.posts;
+     self.urlLinks = self.articles.map(function (article){
+                      return article.url;
+                      });
+    self.articleImages = self.articles.map(function (article){
+                     return article.thread.main_image;
+                     });
+    self.articleTitles = self.articles.map(function (article){
+                     return article.title;
+                     });
+    self.quantity = self.numberToRead[0] - 1;
      self.searchingForLink = false;
    });
  };
+
+
 
 
 }]);
