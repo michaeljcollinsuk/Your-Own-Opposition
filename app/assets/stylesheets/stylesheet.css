@@ -3,17 +3,72 @@ body {
   text-align: center;
   font-family: Arvo, Arial, sans-serif;
   background-color: #f3ffe6;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background: url('http://dreamlandia.com/images/N/newspaper.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 h1 {
   font-family: Lobster, Serif;
   font-size: 35pt;
 }
+
+header{
+    font-family: Arvo, serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+}
+p{
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+.head{
+    text-align: center;
+    position: relative;
+}
+.headerobjectswrapper{
+}
+.subhead{
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+}
+
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: rgb(250, 130, 122);
+}
+
+#urls {
+  background-color: rgba(214, 242, 219, 0.88);
+
+  font-size: 15px;
+  padding: 15px;
+  box-shadow: 1px 0 3px rgba(0,0,0, 1);
+  border-radius: 500px;
+  width: auto;
+  margin: auto;
+}
+
 #show_bias {
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
   width: 25vw;
   margin: auto;
@@ -23,9 +78,9 @@ h1 {
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
-  width: 25vw;
+  width: 70vw;
   margin: auto;
 }
 #show_suggest {
@@ -33,7 +88,7 @@ h1 {
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
   width: 25vw;
   margin: auto;
@@ -42,43 +97,89 @@ h1 {
   font-family: Lobster, Serif;
   font-size: 10pt;
 }
-
-button {
--moz-box-shadow:inset 0px 1px 18px 0px #9acc85;
--webkit-box-shadow:inset 0px 1px 18px 0px #9acc85;
-box-shadow:inset 0px 1px 18px 0px #9acc85;
-background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #74ad5a), color-stop(1, #68a54b));
-background:-moz-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
-background:-webkit-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
-background:-o-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
-background:-ms-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
-background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#74ad5a', endColorstr='#68a54b',GradientType=0);
-background-color:#74ad5a;
--moz-border-radius:4px;
--webkit-border-radius:4px;
-border-radius:4px;
-border:1px solid #3b6e22;
-display:inline-block;
-cursor:pointer;
-color:#ffffff;
-font-family: Lobster, Serif;
-font-size:22px;
-font-weight:bold;
-padding:6px 23px;
-text-decoration:none;
+#crunching_numbers {
+  font-family: Lobster, Serif;
+  font-size: 35pt;
+  padding: 20px;
+  box-shadow: 1px 0 3px rgba(0,0,0, 1);
+  background-color: #rgb(0, 0, 5);
+  border-radius: 500px;
+  width: 25vw;
+  margin: auto;
 }
+#suggestions {  font-family: Lobster, Serif;
+  font-size: 35pt;
+  padding: 55px;
+  box-shadow: 1px 0 3px rgba(0,0,0, 1);
+  background-color: #rgb(0, 0, 5);
+  border-radius: 500px;
+  width: 25vw;
+  margin: auto;
+}
+input[type=submit], button {
+  margin: 2%;
+  -moz-box-shadow:inset 0px 1px 18px 0px #9acc85;
+  -webkit-box-shadow:inset 0px 1px 18px 0px #9acc85;
+  box-shadow:inset 0px 1px 18px 0px #9acc85;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #74ad5a), color-stop(1, #68a54b));
+  background:-moz-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-webkit-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-o-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-ms-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#74ad5a', endColorstr='#68a54b',GradientType=0);
+  background-color:#74ad5a;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  border-radius:4px;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family: Lobster, Serif;
+  font-size:22px;
+  font-weight:bold;
+  padding:6px 23px;
+  text-decoration:none;
+}
+
+input[type=text]{
+  align-self: center;
+  text-align: right;
+ background: url(http://i.stack.imgur.com/ynxjD.png) repeat-y;
+ width: 75%;
+ max-width: 500px;
+ height: 10%;
+ max-height: 50px;
+ font-family: 'Gruppo';
+ font-size: 100%;
+ line-height: 200%;
+}
+
+input[type=password]{
+  align-self: center;
+  text-align: right;
+ background: url(http://i.stack.imgur.com/ynxjD.png) repeat-y;
+ width: 75%;
+ max-width: 500px;
+ height: 10%;
+ max-height: 50px;
+ font-family: 'Gruppo';
+ font-size: 100%;
+ line-height: 200%;
+}
+
 button:hover {
-background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #68a54b), color-stop(1, #74ad5a));
-background:-moz-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
-background:-webkit-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
-background:-o-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
-background:-ms-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
-background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#68a54b', endColorstr='#74ad5a',GradientType=0);
-background-color:#68a54b;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #68a54b), color-stop(1, #74ad5a));
+  background:-moz-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-webkit-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-o-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-ms-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#68a54b', endColorstr='#74ad5a',GradientType=0);
+  background-color:#68a54b;
 }
 button:active {
-position:relative;
-top:1px;
+  position:relative;
+  top:1px;
 }
