@@ -24,24 +24,32 @@
   <% end %>
 
   <div class="container" ng-view>
-    <section>
+    <section class="analysis">
       <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
       <button ng-show="url.loaded" ng-click="url.hideBias()">Hide my bias</button>
       <h1 ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} </h1>
       <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()">Show my media diet</button>
       <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()">Hide my media diet</button>
-      <h1 ng-show="url.furtherInfoLoaded"> My media diet: {{url.breakdownResponse}} </h1>
-
+      <h1 ng-show="url.furtherInfoLoaded">
+        Your media diet:
+        <h2 ng-show="url.furtherInfoLoaded" ng-repeat="source in url.sources">
+        {{source}} - <h2 ng-repeat="percentageRead in url.percentageRead track by $index"> {{percentageRead}}% </h2>
+        </h2>
+        - As you can see, not as balanced as it could be.
+      </h1>
     </section>
 
-    <section>
+    <section class=suggestion>
       <div ng-hide="url.searchingForLink">
       <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
       <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
-    </div>
+    </div class="suggestion-served" ng-repeat="articles in url.articles">
       <h1 ng-show="url.searchingForLink"> Crunching the numbers... </h1>
-      <a ng-show="url.articleLoaded" href="{{url.articles}}" ng-click="url.saveThis">Click Me</a>
+      <a ng-show="url.articleLoaded" href="{{url.urlLink}}">
+        <img id="article-image" src="{{ url.img}}" alt="article-image">
+        Click Me
+      </a>
     </div>
     </section>
 

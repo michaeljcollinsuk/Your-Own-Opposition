@@ -5,8 +5,12 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
   var breakdownResponse = [];
+  var sources = [];
+  var percentageRead = [];
   var suggestionsResponse = [];
   var articles = [];
+  var img = "";
+  var urlLink = "";
   var keyword = "";
 
   self.showRecentUrls = function() {
@@ -32,6 +36,14 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
     self.furtherInfoLoaded = true;
     analysisResource.get().$promise.then(function(data){
       self.breakdownResponse = data.media_diet;
+      self.sources = Object.keys(self.breakdownResponse);
+      self.percentageRead =
+      self.sources.map(function (key) {
+      return self.breakdownResponse[key];
+
+  });
+  debugger;
+
   });
 
   self.hideBreakDown = function() {
@@ -58,11 +70,11 @@ var urlsResource = $resource('http://localhost:3000/urls');
    self.searchingForLink = true;
   var webhoseResource = $resource("https://webhose.io/search?token=b68bbb9d-dd4d-4179-95c1-d60a3cdbd303&format=json&q=politics%20site%3A"+ self.keyword + ".co.uk");
    webhoseResource.get().$promise.then(function(data) {
-    //  console.log(self.keyword);
-     self.articles = data.posts[0].url;
+     self.articles = data.posts;
+     self.urlLink = self.articles[0].url;
+     self.image = data.posts[0].img;
      self.articleLoaded = true;
      self.searchingForLink = false;
-    //  console.log(self.articles);
    });
  };
 
