@@ -8,7 +8,7 @@ class UrlAnalysis
     @current_bias = political_leaning_perc
     @funny_bias_message = find_right_message
     # @topics_list = parse_keywords_history
-    @media_diet = find_media_diet(sources_to_analyse)
+    @media_diet = find_media_diet(url_parser.news_source_list)
     @top_topics = find_media_diet(url_parser.topics_list)
     @top_topic = find_top_topic(top_topics)
   end
@@ -29,7 +29,7 @@ class UrlAnalysis
 
   def political_leaning_scores
     recent_scores = []
-    url_parser.news_source_list.each{|source| recent_scores << papers[source]}
+    sources_to_analyse.each{|source| recent_scores << papers[source]}
     recent_scores
   end
 
@@ -84,6 +84,6 @@ class UrlAnalysis
 
   public
 
-  attr_reader :user_urls, :papers, :media_diet, :url_parser, :topics_list, :top_topics, :top_topic, :funny_bias_message
+  attr_reader :current_bias, :papers, :media_diet, :url_parser, :topics_list, :top_topics, :top_topic, :funny_bias_message
 
 end
