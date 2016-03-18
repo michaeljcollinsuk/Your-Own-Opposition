@@ -8,16 +8,19 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var sources = [];
   var percentageRead = [];
   var suggestionsResponse = [];
+  var sourceSuggestion = [];
   var articleTitle = "";
   var articles = [];
   var img = "";
   var title = "";
   var urlLink = "";
+  var keywords = [];
   var keyword = "";
   var topicKeywords = [];
   var topKeywords = [];
   var mostRelevant = [];
   var topicValues = [];
+  var numberToRead = "";
 
 
   self.showRecentUrls = function() {
@@ -66,7 +69,12 @@ var urlsResource = $resource('http://localhost:3000/urls');
    suggestionsResource.get().$promise.then(function(data){
      self.topicSuggestionsResponse = data.url_analysis.top_topics;
      self.suggestionsResponse = data.best_suggestion;
-     self.keyword = Object.keys(self.suggestionsResponse)[0];
+     self.keywords = Object.keys(self.suggestionsResponse);
+     self.numberToRead =
+     self.keywords.map(function (key) {
+     return self.suggestionsResponse[key];
+ });
+     self.keyword = self.keywords[0];
      self.topicKeyword = Object.keys(data.url_analysis.top_topic)[0];
    });
  };

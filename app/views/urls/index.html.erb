@@ -46,7 +46,7 @@
       <div ng-hide="url.searchingForLink">
       <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
-      <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
+      <h1 ng-show="url.suggestionsLoaded" ng-repeat="keyword in url.keywords track by $index"> We suggest that you read {{url.numberToRead[$index]}} articles from {{keyword}} </h1>
     </div class="suggestion-served" ng-repeat="articles in url.articles">
       <h1 ng-show="url.searchingForLink"> Crunching the numbers... </h1>
       <a ng-show="url.articleLoaded" href="{{url.urlLink}}">
