@@ -1,19 +1,13 @@
-<body ng-controller='UrlsController as url'>
-  <button ng-hide="url.userUrlsLoaded" ng-click="url.showRecentUrls()">Show me what I've read recently</button>
-  <button ng-show="url.userUrlsLoaded" ng-click="url.hideRecentUrls()">Hide what I've read recently</button>
-<aside ng-show="url.userUrlsLoaded" >
-
-<% if @url.any? && current_user %>
-<% @url.each do |url| %>
-
-    <h2> <%= url.name if url.user == current_user%> </h2>
-    <h2> <%= url.link if url.user == current_user%> </h2>
+<div id='urls'>
+  <% if @url.any? && current_user %>
+  <% @url.each do |url| %>
+      <h2> <%= url.name if url.user == current_user%> </h2>
+      <h2> <%= url.link if url.user == current_user%> </h2>
+    <% end %>
   <% end %>
-<% else %>
-  No urls yet
-<% end %>
-</aside>
-<% if current_user %>
+  </aside>
+  <% if current_user %>
+  </div>
 
 
 <p>Add link</p>
@@ -27,10 +21,10 @@
     <section class="analysis">
       <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
       <button ng-show="url.loaded" ng-click="url.hideBias()">Hide my bias</button>
-      <h1 ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} </h1>
+      <div id='show_bias' ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} </div>
       <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()">Show my media diet</button>
       <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()">Hide my media diet</button>
-      <h1 ng-show="url.furtherInfoLoaded">
+      <div id='show_diet' ng-show="url.furtherInfoLoaded">
         Your media diet:
         <h2 ng-show="url.furtherInfoLoaded" ng-repeat="source in url.sources track by $index">
         {{source}} {{url.percentageRead[$index]}}% </h2>
@@ -41,14 +35,20 @@
    {{title}}, {{links[$index]}}
 </div>
     </section>
+    <section>
+    <body ng-controller='UrlsController as url'>
+      <button ng-hide="url.userUrlsLoaded" ng-click="url.showRecentUrls()">Show me what I've read recently</button>
+      <button ng-show="url.userUrlsLoaded" ng-click="url.hideRecentUrls()">Hide what I've read recently</button>
+      <aside ng-show="url.userUrlsLoaded" >
+    </section>
 
     <section class=suggestion>
       <div ng-hide="url.searchingForLink">
       <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
-      <h1 ng-show="url.suggestionsLoaded" ng-repeat="keyword in url.keywords track by $index"> We suggest that you read {{url.numberToRead[$index]}} articles from {{keyword}} </h1>
+      <div id='suggestions' ng-show="url.suggestionsLoaded" ng-repeat="keyword in url.keywords track by $index"> We suggest that you read {{url.numberToRead[$index]}} articles from {{keyword}} </div>
     </div class="suggestion-served" ng-repeat="articles in url.articles">
-      <h1 ng-show="url.searchingForLink"> Crunching the numbers... </h1>
+      <div id='crunching_numbers' ng-show="url.searchingForLink"> Crunching the numbers... </h1>
       <a ng-show="url.articleLoaded" href="{{url.urlLink}}">
         <img id="article-image" src={{url.img}} alt="article-image">
         {{url.title}}
@@ -57,6 +57,7 @@
     </section>
 
 <% else %>
-  <p> Sign up to get involved </p>
+  <header> Welcome to Opposing Views </header>
+  <h6> Sign up, input your daily reading habits, and we'll balance your media diet... </h6>
 <% end %>
 </body>
