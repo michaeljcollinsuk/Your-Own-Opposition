@@ -21,6 +21,7 @@ class UrlAnalysis
     @topics_list = parse_keywords_history
     @media_diet = find_media_diet(news_source_list)
     @top_topics = find_media_diet(topics_list)
+    @top_topic = find_top_topic(top_topics)
   end
 
   def parse_source_history
@@ -63,17 +64,18 @@ class UrlAnalysis
     source_or_topic.each do |source|
       quantity = source_or_topic.select{|same_source| source == same_source}.size
       percentage = (quantity.to_f / source_or_topic.size.to_f) * 100
-      if source_or_topic == news_source_list
-        media_analysed[source] = percentage.to_i
-      else
-        media_analysed[source] = percentage.to_i
-      end
+      media_analysed[source] = percentage.to_i
     end
     media_analysed
   end
 
+  def find_top_topic(top_topics)
+    top_score = top_topics.values.sort[-1]
+    top_topics.select{|key, value| key if value == top_score}
+  end
+
   public
 
-  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics
+  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics, :top_topic
 
 end
