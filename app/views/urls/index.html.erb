@@ -5,8 +5,7 @@
     <h2> <%= url.name if url.user == current_user%> </h2>
     <h2> <%= url.link if url.user == current_user%> </h2>
   <% end %>
-<% else %>
-  No urls yet
+
 <% end %>
 
 <% if current_user %>
@@ -24,15 +23,11 @@
       <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()" class="button">Show my media diet</button>
       <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()" class="button">Hide my media diet</button>
       <div id='show_diet' ng-show="url.furtherInfoLoaded"> My media diet: {{url.breakdownResponse}} </div>
-
     </section>
-
     <section>
       <button ng-hide="url.suggestionsLoaded" ng-click="url.showSuggestions()" class="button">What paper should I read?</button>
       <button ng-show="url.suggestionsLoaded" ng-click="url.hideSuggestions()" class="button">Hide suggestions</button>
-
       <div id='show_suggest' ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </div>
-
     </section>
     <section>
       <button ng-click="url.getSuggestions()" class="button">Get me an article</button>
@@ -40,6 +35,7 @@
     </section>
   </div>
 <% else %>
-  <p> Sign up to get involved </p>
+  <header> Welcome to Opposing Views </header>
+  <h6> Sign up, input your daily reading habits, and we'll balance your media diet... </h6>
 <% end %>
 </body>

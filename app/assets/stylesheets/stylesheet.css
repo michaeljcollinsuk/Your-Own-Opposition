@@ -2,6 +2,16 @@ body {
   text-align: center;
   font-family: Arvo, Arial, sans-serif;
   background-color: #f3ffe6;
+  background-cover:
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background: url('http://dreamlandia.com/images/N/newspaper.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  border: 100px;
+  padding: 100px;
 }
 
 h1 {
@@ -9,15 +19,48 @@ h1 {
   font-size: 35pt;
 }
 
+header{
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+
+}
+p{
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.head{
+    text-align: center;
+    position: relative;
+
+
+}
+
+.headerobjectswrapper{
+}
+
+.subhead{
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+
+}
+
 #show_bias {
   font-family: Lobster, Serif;
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
   width: 25vw;
   margin: auto;
+
 }
 
 #show_diet {
@@ -25,7 +68,7 @@ h1 {
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
   width: 25vw;
   margin: auto;
@@ -36,7 +79,7 @@ h1 {
   font-size: 35pt;
   padding: 55px;
   box-shadow: 1px 0 3px rgba(0,0,0, 1);
-  background-color: #0099FF;
+  background-color: #rgb(0, 0, 5);
   border-radius: 500px;
   width: 25vw;
   margin: auto;
