@@ -29,7 +29,7 @@
     <section class="analysis">
       <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
       <button ng-show="url.loaded" ng-click="url.hideBias()">Hide my bias</button>
-      <div id='show_bias' ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} </div>
+      <div id='show_bias' ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} ... {{url.analysisResponseMessage}} </div>
       <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()">Show my media diet</button>
       <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()">Hide my media diet</button>
       <div id='show_diet' ng-show="url.furtherInfoLoaded">

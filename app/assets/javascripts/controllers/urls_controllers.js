@@ -3,6 +3,7 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var self = this;
   var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
+  var analysisResponseMessage = "";
   var breakdownResponse = [];
   var sources = [];
   var percentageRead = [];
@@ -33,6 +34,7 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
     self.loaded = true;
     analysisResource.get().$promise.then(function(data){
       self.analysisResponse = data.current_bias;
+      self.analysisResponseMessage = data.funny_bias_message;
     });
   };
 
@@ -45,12 +47,9 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
     analysisResource.get().$promise.then(function(data){
       self.breakdownResponse = data.media_diet;
       self.sources = Object.keys(self.breakdownResponse);
-      self.percentageRead =
-      self.sources.map(function (key) {
-      return self.breakdownResponse[key];
-  });
-
-
+      self.percentageRead = self.sources.map(function (key) {
+                        return self.breakdownResponse[key];
+                        });
   });
 
   self.hideBreakDown = function() {

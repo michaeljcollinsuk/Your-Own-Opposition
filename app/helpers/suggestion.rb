@@ -1,6 +1,7 @@
+private
+
 class Suggestion
 
-attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions, :best_suggestion
 
   def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
     @url_analysis = url_analysis_klass.new(urls)
@@ -11,10 +12,13 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     @best_suggestion = nil
   end
 
+
+
   def make_suggestion
     suggest_topic
     eliminate_bias
   end
+
 
   def suggest_topic
     top_topics = url_analysis.top_topics
@@ -31,6 +35,7 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     find_suggestion(score_needed)
     end
   end
+
 
   def find_suggestion(score_needed)
    papers = url_analysis.papers
@@ -74,6 +79,9 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     score_needed > 0
   end
 
+  public
+
+  attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions, :best_suggestion
 
 
 end

@@ -18,11 +18,14 @@ class UrlAnalysis
     @user_urls = user_urls
     @news_source_list = parse_source_history
     @current_bias = political_leaning_perc
+    @funny_bias_message = find_right_message
     @topics_list = parse_keywords_history
     @media_diet = find_media_diet(news_source_list)
     @top_topics = find_media_diet(topics_list)
     @top_topic = find_top_topic(top_topics)
   end
+
+
 
   def parse_source_history
     list =
@@ -38,6 +41,21 @@ class UrlAnalysis
     recent_scores = []
     news_source_list.each{|source| recent_scores << papers[source]}
     recent_scores
+  end
+
+  def find_right_message
+    message =
+    case political_leaning_perc
+      when -100..-80 then "You're a Corbynista Commie"
+      when -80..-50 then "You un-washed hippie bastard"
+      when -50..-20 then "leaning to the Loony Left"
+      when -10..10 then "sitting on the fence"
+      when 10..20 then "I'm not racist but..."
+      when 20..50 then "benefit-scrounger blamer"
+      when 50..80 then "Cameron isn't a pig-fucker in your eyes"
+      when 80..100 then "Trump-loving bum-trumpet"
+    end
+    message
   end
 
   def parse_source(url)
@@ -76,6 +94,6 @@ class UrlAnalysis
 
   public
 
-  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics, :top_topic
+  attr_reader :user_urls, :papers, :media_diet, :news_source_list, :topics_list, :top_topics, :top_topic, :funny_bias_message
 
 end
