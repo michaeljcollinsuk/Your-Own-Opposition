@@ -13,7 +13,6 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
 
   def make_suggestion
     suggest_topic
-    # require 'pry'; binding.pry
     eliminate_bias
   end
 
@@ -40,10 +39,8 @@ attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_sugg
     if matches.length == 0
       find_many_suggestions(score_needed, papers)
       @best_suggestion = find_best_suggestion
-
     else
-      one_link = matches.pop
-      @best_suggestion = {one_link => 1}
+      @best_suggestion = {matches.pop => 1}
       matches
     end
   end
