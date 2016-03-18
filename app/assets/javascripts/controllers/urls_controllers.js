@@ -8,10 +8,13 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var sources = [];
   var percentageRead = [];
   var suggestionsResponse = [];
+  var articleTitle = "";
   var articles = [];
   var img = "";
+  var title = "";
   var urlLink = "";
   var keyword = "";
+  var topicKeyword = "";
 
   self.showRecentUrls = function() {
     self.userUrlsLoaded = true;
@@ -40,9 +43,8 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
       self.percentageRead =
       self.sources.map(function (key) {
       return self.breakdownResponse[key];
-
   });
-  debugger;
+
 
   });
 
@@ -58,8 +60,10 @@ var urlsResource = $resource('http://localhost:3000/urls');
  self.showSuggestions = function() {
    self.suggestionsLoaded = true;
    suggestionsResource.get().$promise.then(function(data){
+     self.topicSuggestionsResponse = data.top_topics;
      self.suggestionsResponse = data.best_suggestion;
      self.keyword = Object.keys(self.suggestionsResponse)[0];
+     self.topicKeyword = Object.keys(self.topicSuggestionsResponse)[0];
    });
  };
 
@@ -68,11 +72,13 @@ var urlsResource = $resource('http://localhost:3000/urls');
  self.getSuggestions = function() {
    self.suggestionsLoaded = false;
    self.searchingForLink = true;
-  var webhoseResource = $resource("https://webhose.io/search?token=b68bbb9d-dd4d-4179-95c1-d60a3cdbd303&format=json&q=politics%20site%3A"+ self.keyword + ".co.uk");
+  var webhoseResource = $resource("https://webhose.io/search?token=b68bbb9d-dd4d-4179-95c1-d60a3cdbd303&format=json&q=politics%20" + self.topicKeyword + "%20site%3A"+ self.keyword + ".co.uk");
    webhoseResource.get().$promise.then(function(data) {
      self.articles = data.posts;
-     self.urlLink = self.articles[0].url;
+     debugger;
+     self.urlLink = data.posts[0].url;
      self.image = data.posts[0].img;
+     self.articleTitle = data.posts[0].title;
      self.articleLoaded = true;
      self.searchingForLink = false;
    });
