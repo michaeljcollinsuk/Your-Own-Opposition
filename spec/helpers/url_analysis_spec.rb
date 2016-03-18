@@ -5,10 +5,13 @@ describe UrlAnalysis, :type => :class do
   let(:telegraph_url) {'http://www.telegraph.co.uk/business/2016/03/16/budget-2016-george-osbornes-speech-live0/'}
   let(:guardian_url) {'http://www.theguardian.com/'}
   let(:user_urls) {[daily_mail_url, telegraph_url, guardian_url]}
+  let(:papers_klass) {double :papers_klass}
+  let(:url_parser_klass) {double :url_parser_klass}
+  let(:url_parser) {double :url_parser}
   subject(:url_calculator) {described_class.new(user_urls)}
-
   subject(:url_calculator_used) {described_class.new(user_urls)}
-  let(:papers) {{dailymail: 100,
+  let(:papers) {double :papers}
+  let(:mocked_papers) {{dailymail: 100,
                 telegraph: 80,
                 bbc: 5,
                 theguardian: -100,
@@ -21,16 +24,27 @@ describe UrlAnalysis, :type => :class do
                 express: 20,
                 morningstar: -60}}
 
+    before do
+      allow(papers_klass).to receive(:new).and_return(papers)
+      allow(url_parser).to receive(:new).with(user_urls, papers).and_return(url_parser)
+      allow(papers_klass).to receive(:new).and_return(papers)
+      allow(papers).to receive(:list).and_return(mocked_papers)
+
+    end
+
 
 
     describe '#initialize' do
 
-      it 'has a hash of papers matched to their political leniencies' do
-        expect(url_calculator.papers).to eq(papers)
+      it 'retrieves a hash of papers matched to their political leniencies' do
+        allow(url_parser).to receive(:papers).and_return(papers)
+        expect(url_calculator.papers).to eq(mocked_papers)
       end
 
-      it 'has an array for analysed_urls' do
-        expect(url_calculator.news_source_list).to eq([:dailymail, :telegraph, :theguardian])
+      it 'instantiates a new url_parser' do
+        allow(url_parser_klass).to receive(:new).with(user_urls, papers)
+        expect(url_parser_klass).to receive(:new).with(user_urls, papers)
+        described_class.new(user_urls, papers_klass)
       end
 
       it 'defaults user_urls input to an empty array if no array supplied' do
@@ -57,49 +71,49 @@ describe UrlAnalysis, :type => :class do
 
     end
 
-  describe '#parse_source(url)' do
-
-    it 'matches a single url to the main news source name' do
-      expect(url_calculator.parse_source(daily_mail_url)).to include(:dailymail)
-    end
-
-    it 'matches urls against a list of source names' do
-      expect(url_calculator.parse_source(telegraph_url)).to include(:telegraph)
-    end
-
-  end
-
-
-
-  describe '#parse_source_history' do
+  # describe '#parse_source(url)' do
+  #
+  #   it 'matches a single url to the main news source name' do
+  #     expect(url_calculator.parse_source(daily_mail_url)).to include(:dailymail)
+  #   end
+  #
+  #   it 'matches urls against a list of source names' do
+  #     expect(url_calculator.parse_source(telegraph_url)).to include(:telegraph)
+  #   end
+  #
+  # end
 
 
 
-    it 'updates the news_source_list with the names of the matching news sources of urls' do
-      url_calculator_used.parse_source_history
-      expect(url_calculator_used.news_source_list).to include(:telegraph, :dailymail, :theguardian)
-    end
-
-
-
-  end
-
-  describe '#parse_keywords_history' do
-
-    before do
-      url_calculator_used.parse_source_history
-    end
-
-    it 'returns an array of keywords as topics' do
-      expect(url_calculator_used.topics_list).to include(:osborne)
-    end
-
-    it 'calls parse_source_history so to remove news sources from list' do
-      expect(url_calculator_used.topics_list).not_to include(:telegraph)
-      expect(url_calculator_used.topics_list).not_to include(:dailymail)
-    end
-
-  end
+  # describe '#parse_source_history' do
+  #
+  #
+  #
+  #   it 'updates the news_source_list with the names of the matching news sources of urls' do
+  #     url_calculator_used.parse_source_history
+  #     expect(url_calculator_used.news_source_list).to include(:telegraph, :dailymail, :theguardian)
+  #   end
+  #
+  #
+  #
+  # end
+  #
+  # describe '#parse_keywords_history' do
+  #
+  #   before do
+  #     url_calculator_used.parse_source_history
+  #   end
+  #
+  #   it 'returns an array of keywords as topics' do
+  #     expect(url_calculator_used.topics_list).to include(:osborne)
+  #   end
+  #
+  #   it 'calls parse_source_history so to remove news sources from list' do
+  #     expect(url_calculator_used.topics_list).not_to include(:telegraph)
+  #     expect(url_calculator_used.topics_list).not_to include(:dailymail)
+  #   end
+  #
+  # end
 
 
   describe '#list_political_leaning_scores' do

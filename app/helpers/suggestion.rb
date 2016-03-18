@@ -12,8 +12,6 @@ class Suggestion
     @best_suggestion = nil
   end
 
-
-
   def make_suggestion
     suggest_topic
     eliminate_bias
