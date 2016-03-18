@@ -64,9 +64,10 @@ var urlsResource = $resource('http://localhost:3000/urls');
      self.topicSuggestionsResponse = data.url_analysis.top_topics;
      self.suggestionsResponse = data.best_suggestion;
      self.keyword = Object.keys(self.suggestionsResponse)[0];
-     self.topicKeywords = Object.keys(self.topicSuggestionsResponse)[0];
-     self.topKeywords.push(self.topicSuggestionsResponse[self.topicKeywords])
-       debugger;
+     self.topicKeywords = Object.keys(self.topicSuggestionsResponse);
+     debugger;
+     self.topKeywords.push(self.topicSuggestionsResponse[self.topicKeywords]).sort();
+
    });
  };
 
