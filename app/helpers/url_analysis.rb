@@ -13,7 +13,7 @@ class UrlAnalysis
               buzzfeed: -20,
               independent: -20,
               thetimes: 60,
-              dailyexpress: 20,
+              express: 20,
               morningstar: -60}
     @user_urls = user_urls
     @news_source_list = parse_source_history
@@ -44,10 +44,9 @@ class UrlAnalysis
   end
 
   def parse_keywords_history
-    topics_list = user_urls.map{|url| parse(url)}.flatten - news_source_list
-    topics_list.map!{|word| word.downcase}
+    @topics_list = user_urls.map{|url| parse(url)}.flatten - news_source_list
     find_media_diet(topics_list)
-
+    @topics_list.map!{|word| word.downcase}
   end
 
   def parse(url)
@@ -55,16 +54,20 @@ class UrlAnalysis
   end
 
   def irrelevant_keyword?(keyword)
-    ignore_me_array = ['www', 'http', 'com']
-    ignore_me_array.include?(keyword) || keyword.length < 4
+    ignore_me_array = ['www', 'http', 'com', 'html', 'co']
+    ignore_me_array.include?(keyword) || keyword.length <= 3
   end
 
   def find_media_diet(source_or_topic)
     media_analysed = Hash.new
     source_or_topic.each do |source|
-      quantity = news_source_list.select{|same_source| source == same_source}.size
+      quantity = source_or_topic.select{|same_source| source == same_source}.size
       percentage = (quantity.to_f / source_or_topic.size.to_f) * 100
-      media_analysed[source] = percentage.to_i
+      if source_or_topic == news_source_list
+        media_analysed[source] = percentage.to_i
+      else
+        media_analysed[source] = percentage.to_i
+      end
     end
     media_analysed
   end

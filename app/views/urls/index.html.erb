@@ -1,4 +1,8 @@
 <body ng-controller='UrlsController as url'>
+  <button ng-hide="url.userUrlsLoaded" ng-click="url.showRecentUrls()">Show me what I've read recently</button>
+  <button ng-show="url.userUrlsLoaded" ng-click="url.hideRecentUrls()">Hide what I've read recently</button>
+<aside ng-show="url.userUrlsLoaded" >
+
 <% if @url.any? && current_user %>
 <% @url.each do |url| %>
 
@@ -8,14 +12,17 @@
 <% else %>
   No urls yet
 <% end %>
-
+</aside>
 <% if current_user %>
+
+
 <p>Add link</p>
   <%= form_for @url.new do |f| %>
     <%= f.label :link %>
     <%= f.text_field :link, required: true %>
     <%= f.submit %>
   <% end %>
+
   <div class="container" ng-view>
     <section>
       <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
@@ -28,17 +35,16 @@
     </section>
 
     <section>
-      <button ng-hide="url.suggestionsLoaded" ng-click="url.showSuggestions()">What paper should I read?</button>
-      <button ng-show="url.suggestionsLoaded" ng-click="url.hideSuggestions()">Hide suggestions</button>
-
+      <div ng-hide="url.searchingForLink">
+      <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
+      <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
       <h1 ng-show="url.suggestionsLoaded"> Suggested Papers: {{url.suggestionsResponse}} </h1>
+    </div>
+      <h1 ng-show="url.searchingForLink"> Crunching the numbers... </h1>
+      <a ng-show="url.articleLoaded" href="{{url.articles}}" ng-click="url.saveThis">Click Me</a>
+    </div>
+    </section>
 
-    </section>
-    <section>
-      <button ng-click="url.getSuggestions()">Get me an article</button>
-      <a ng-show="url.articleLoaded" href="{{url.articles}}">Click Me</a>
-    </section>
-  </div>
 <% else %>
   <p> Sign up to get involved </p>
 <% end %>

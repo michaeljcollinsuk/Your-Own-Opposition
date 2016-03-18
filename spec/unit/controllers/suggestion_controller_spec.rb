@@ -9,8 +9,7 @@ describe SuggestionsController, type: :controller do
      sign_in user
      get :index
      json = JSON.parse(response.body)
-
-     expect(json).to eq({"dailymail"=>2, "telegraph"=>3, "bbc"=>40, "sun"=>2, "thetimes"=>4, "dailyexpress"=>10})
+     expect(json["suggested_sources"]).to eq({"dailymail"=>2, "telegraph"=>3, "bbc"=>40, "sun"=>2, "thetimes"=>4, "express"=>10})
    end
  end
 end

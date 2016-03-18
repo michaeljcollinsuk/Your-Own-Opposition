@@ -16,6 +16,7 @@ feature 'Adding URLs' do
     scenario '-> display users\' urls' do
       visit '/'
       create_url
+      click_button 'Show me what I\'ve read recently'
       expect(page).to have_content('www.firstlink.com')
     end
 
