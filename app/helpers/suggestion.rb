@@ -9,7 +9,6 @@ class Suggestion
     @urls = urls
     @current_bias = url_analysis.political_leaning_perc
     @topic_suggestions = []
-    @best_suggestion = nil
   end
 
   def make_suggestion

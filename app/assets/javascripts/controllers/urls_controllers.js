@@ -71,7 +71,8 @@ var urlsResource = $resource('http://localhost:3000/urls');
        return self.suggestionsResponse[key];
      });
      self.keyword = self.keywords[0];
-     self.topicKeyword = Object.keys(data.url_analysis.top_topic)[0];
+     self.topicKeyword = data.topic_suggestions[0];
+     debugger;
    });
  };
 
