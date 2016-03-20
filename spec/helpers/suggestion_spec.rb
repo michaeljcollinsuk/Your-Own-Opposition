@@ -4,7 +4,7 @@ describe Suggestion, :type => :class do
   let(:dummy_url_analysis_klass) {double :dummy_url_analysis_klass}
   let(:dummy_url_analysis) {double :dummy_url_analysis}
   let(:dummy_urls) {['a', 'b']}
-  subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+  subject(:suggestion) {described_class.new(dummy_urls, dummy_url_analysis_klass)}
   let(:dummy_papers) {{dailymail: 100,
                         telegraph: 80,
                         bbc: 5,
@@ -35,7 +35,6 @@ describe Suggestion, :type => :class do
     allow(dummy_url_analysis).to receive(:papers).and_return(dummy_papers)
     allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(leftwing_score)
     allow(dummy_url_analysis).to receive(:top_topics).and_return(dummy_top_topics)
-
     allow(suggestion).to receive(:left_needed?)
   end
 
@@ -58,7 +57,7 @@ describe Suggestion, :type => :class do
     end
 
     context 'no urls supplied' do
-      subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
+      subject(:suggestion_no_urls) {described_class.new('', dummy_url_analysis_klass)}
 
       it 'defaults to an empty array if no urls are given to make a suggestion' do
         expect(suggestion_no_urls.urls).to be_empty
@@ -68,11 +67,6 @@ describe Suggestion, :type => :class do
   end
 
   describe '#make_suggestion' do
-
-    # it 'calculates the score needed based on current political leaning score' do
-    #   expect(dummy_url_analysis).to receive(:political_leaning_perc)
-    #   suggestion.make_suggestion
-    # end
 
     it 'calls find_suggestions with the score needed' do
       expect(suggestion).to receive(:eliminate_bias)
@@ -108,7 +102,7 @@ describe Suggestion, :type => :class do
       end
 
       context '#no urls to analyse/ balanced reading' do
-        subject(:suggestion_no_urls) {described_class.new(dummy_url_analysis_klass)}
+        subject(:suggestion_no_urls) {described_class.new([], dummy_url_analysis_klass)}
 
         before do
           allow(dummy_url_analysis).to receive(:political_leaning_perc).and_return(0)
@@ -131,7 +125,7 @@ describe Suggestion, :type => :class do
     end
 
     describe '#find_suggestion' do
-      subject(:suggestion) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+      subject(:suggestion) {described_class.new(dummy_urls, dummy_url_analysis_klass)}
 
       before do
         suggestion.make_suggestion
@@ -162,7 +156,7 @@ describe Suggestion, :type => :class do
     describe '#find_many_suggestions' do
 
       context '#right wing suggestions needed' do
-        subject(:suggestion_right) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        subject(:suggestion_right) {described_class.new(dummy_urls, dummy_url_analysis_klass)}
         let(:shortlist) {{bbc: 5}}
 
         before do
@@ -189,7 +183,7 @@ describe Suggestion, :type => :class do
     describe '#filter_sources' do
 
       context '#left wing needed' do
-        subject(:suggestion_left) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        subject(:suggestion_left) {described_class.new(dummy_urls, dummy_url_analysis_klass)}
         # let(:shortlist) {{bbc: 5}}
 
         before do
@@ -214,7 +208,7 @@ describe Suggestion, :type => :class do
 
       context '#right wing needed' do
 
-        subject(:suggestion_right) {described_class.new(dummy_url_analysis_klass, dummy_urls)}
+        subject(:suggestion_right) {described_class.new(dummy_urls, dummy_url_analysis_klass)}
         let(:shortlist) {{bbc: 5}}
 
         before do

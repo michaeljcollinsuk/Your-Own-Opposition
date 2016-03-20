@@ -2,7 +2,6 @@ class UrlParser
 
   attr_reader :user_urls, :papers, :news_source_list, :topics_list
 
-
   def initialize(user_urls = [], papers)
     @user_urls = user_urls
     @papers = papers.list

@@ -2,9 +2,8 @@ private
 
 class Suggestion
 
-  attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions, :best_suggestion
 
-  def initialize(url_analysis_klass=UrlAnalysis, urls=Array.new)
+  def initialize(urls=Array.new, url_analysis_klass=UrlAnalysis)
     @url_analysis = url_analysis_klass.new(urls)
     @suggested_sources = Hash.new
     @urls = urls
@@ -79,6 +78,7 @@ class Suggestion
   end
 
   public
+  attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :topic_suggestions, :best_suggestion
 
 
 

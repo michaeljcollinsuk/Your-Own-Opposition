@@ -5,15 +5,20 @@ class UrlAnalysis
 
   def initialize(user_urls= Array.new, url_type=Papers, url_parser=UrlParser)
     @url_parser = url_parser.new(user_urls, url_type.new)
-    @papers = url_parser.papers
+    @papers = @url_parser.papers
     @current_bias = political_leaning_perc
     @funny_bias_message = find_right_message
-    @media_diet = find_media_diet(url_parser.news_source_list)
-    @top_topics = find_media_diet(url_parser.topics_list)
+    @media_diet = find_media_diet(sources_to_analyse)
+    @top_topics = find_media_diet(topics_to_analyse)
   end
+
 
   def sources_to_analyse
     url_parser.news_source_list
+  end
+
+  def topics_to_analyse
+    url_parser.topics_list
   end
 
   def political_leaning_perc
@@ -24,6 +29,21 @@ class UrlAnalysis
     recent_scores = []
     sources_to_analyse.each{|source| recent_scores << papers[source]}
     recent_scores
+  end
+
+  def find_media_diet(source_or_topic)
+    media_analysed = Hash.new
+    source_or_topic.each do |source|
+      quantity = source_or_topic.select{|same_source| source == same_source}.size
+      percentage = (quantity.to_f / source_or_topic.size.to_f) * 100
+      media_analysed[source] = percentage.to_i
+    end
+    media_analysed
+  end
+
+  def calculate_diet_percentages(source, source_or_topic)
+    quantity = source_or_topic.select{|same_source| source == same_source}.size
+    (quantity.to_f / source_or_topic.size.to_f) * 100
   end
 
   def find_right_message
@@ -40,18 +60,6 @@ class UrlAnalysis
     end
     message
   end
-
-  def find_media_diet(source_or_topic)
-    media_analysed = Hash.new
-    source_or_topic.each do |source|
-      quantity = source_or_topic.select{|same_source| source == same_source}.size
-      percentage = (quantity.to_f / source_or_topic.size.to_f) * 100
-      media_analysed[source] = percentage.to_i
-    end
-    media_analysed
-  end
-
-
 
   public
 
