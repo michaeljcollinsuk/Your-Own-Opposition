@@ -8,13 +8,13 @@ class UrlAnalysis
               bbc: 5,
               theguardian: -100,
               mirror: -80,
-              sun: 100,
-              huffington_post: -40,
+              thesun: 100,
+              huffingtonpost: -40,
               buzzfeed: -20,
               independent: -20,
               thetimes: 60,
               express: 20,
-              morningstar: -60}
+              morningstaronline: -60}
     @user_urls = user_urls
     @news_source_list = parse_source_history
     @current_bias = political_leaning_perc
