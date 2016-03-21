@@ -72,7 +72,6 @@ var urlsResource = $resource('http://localhost:3000/urls');
      });
      self.keyword = self.keywords[0];
      self.topicKeyword = data.topic_suggestions[0];
-     debugger;
    });
  };
 
