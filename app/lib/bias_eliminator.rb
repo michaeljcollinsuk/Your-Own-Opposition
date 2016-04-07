@@ -1,4 +1,4 @@
-class BiasCorrection
+class BiasEliminator
 
   def initialize(political_leaning_perc)
     @score_needed = political_leaning_perc
