@@ -1,3 +1,5 @@
+#COULD WE MAKE THIS A MODEL?
+
 class Papers
 
 attr_reader :list

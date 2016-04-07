@@ -1,5 +1,7 @@
 class SuggestionsController < ApplicationController
 
+#THIS METHOD IS EXACTLY THE SAME AS THE ONE IN THE ANALYSIS CONTROLLER.
+# USE A HELPER METHOD FOR THIS
   def index
     data = []
     urls = current_user.urls.all
