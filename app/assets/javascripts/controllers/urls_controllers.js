@@ -71,7 +71,7 @@ var urlsResource = $resource('http://localhost:3000/urls');
        return self.suggestionsResponse[key];
      });
      self.keyword = self.keywords[0];
-     self.topicKeyword = Object.keys(data.url_analysis.top_topic)[0];
+     self.topicKeyword = data.topic_suggestions[0];
    });
  };
 
@@ -79,7 +79,6 @@ var urlsResource = $resource('http://localhost:3000/urls');
 
  self.articleLoaded = false;
  self.getSuggestions = function() {
-      debugger;
    self.suggestionsLoaded = false;
    self.searchingForLink = true;
 
