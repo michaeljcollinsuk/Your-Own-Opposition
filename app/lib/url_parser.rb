@@ -1,14 +1,10 @@
 class UrlParser
 
-  attr_reader :user_urls, :papers, :news_source_list, :topics_list
+  attr_reader :user_urls, :papers
 
   def initialize(user_urls= Array.new, sources=Papers)
     @user_urls = user_urls
     @papers = sources.list
-    # @topics_diet = MediaDiet.new(topics_list)
-    # @sources_diet = MediaDiet.new(news_source_list)
-    # @news_source_list = news_source_list
-    # @topics_list = parse_keywords_history
   end
 
   def news_source_list
