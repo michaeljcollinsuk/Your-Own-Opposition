@@ -1,5 +1,5 @@
 
-UrlsApp.controller('UrlsController', ['$resource', function($resource) {
+UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
   var self = this;
   var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
@@ -20,15 +20,13 @@ UrlsApp.controller('UrlsController', ['$resource', function($resource) {
   var topicValues = [];
   var numberToRead = [];
   var quantity = "";
+  self.showUserUrls = false;
 
 
-  self.showRecentUrls = function() {
-    self.userUrlsLoaded = true;
+  self.toggleShowRecentUrls = function() {
+    self.showUserUrls = !self.showUserUrls;
   };
 
-  self.hideRecentUrls = function(){
-    self.userUrlsLoaded = false;
-  };
 
   self.showBias = function() {
     self.loaded = true;

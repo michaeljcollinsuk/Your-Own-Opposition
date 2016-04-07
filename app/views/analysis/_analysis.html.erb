@@ -1,0 +1,22 @@
+<section class="analysis">
+
+  <button ng-hide="analysis.loaded" ng-click="analysis.showBias()">Show my bias</button>
+  <button ng-show="analysis.loaded" ng-click="analysis.hideBias()">Hide my bias</button>
+
+  <div id='show_bias' ng-show="analysis.loaded"> My bias rating: {{analysis.analysisResponse}} ... {{analysis.analysisResponseMessage}} </div>
+
+  <button ng-hide="analysis.furtherInfoLoaded" ng-click="analysis.showBreakDown()">Show my media diet</button>
+  <button ng-show="analysis.furtherInfoLoaded" ng-click="analysis.hideBreakDown()">Hide my media diet</button>
+
+  <div id='show_diet' ng-show="analysis.furtherInfoLoaded">
+    Your media diet:
+
+    <h2 ng-show="analysis.furtherInfoLoaded" ng-repeat="source in analysis.sources track by $index">
+    {{source}} {{analysis.percentageRead[$index]}}%
+    </h2>
+
+    - As you can see, not as balanced as it could be.
+
+  </div>
+
+</section>
