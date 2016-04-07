@@ -2,34 +2,39 @@ class UrlParser
 
   attr_reader :user_urls, :papers, :news_source_list, :topics_list
 
-  def initialize(user_urls = [], papers)
+  def initialize(user_urls= Array.new, sources=Papers)
     @user_urls = user_urls
-    @papers = papers.list
-    @news_source_list = parse_source_history
-    @topics_list = parse_keywords_history
+    @papers = sources.list
+    # @topics_diet = MediaDiet.new(topics_list)
+    # @sources_diet = MediaDiet.new(news_source_list)
+    # @news_source_list = news_source_list
+    # @topics_list = parse_keywords_history
   end
 
-  def parse_source_history
-    user_urls.map{|url| parse_source(url)}.flatten
+  def news_source_list
+    user_urls.map{|url| extract_sources(url)}.flatten
   end
 
-
-  def parse_source(url)
-    parse(url).keep_if{|news_source| papers.has_key? news_source}
+  def topics_list
+    (user_urls.map{|url| extract_keywords(url)}.flatten - news_source_list).map!{|word| word.downcase}
   end
 
-  def parse_keywords_history
-    topics_list = user_urls.map{|url| parse(url)}.flatten - news_source_list
-    topics_list.map!{|word| word.downcase}
+private
+
+  def extract_sources(url)
+    extract_keywords(url).keep_if {|news_source| papers.has_key? news_source}
+  end
+
+  def extract_keywords(url)
+    parse(url).delete_if { |keyword| irrelevant_keyword?(keyword)}.map!{|keyword| keyword.to_sym}
   end
 
   def parse(url)
-    url.gsub(/\d/, '').split(/\W/).delete_if { |keyword| irrelevant_keyword?(keyword)}.map!{|keyword| keyword.to_sym}
+    url.gsub(/\d/, '').split(/\W/)
   end
 
   def irrelevant_keyword?(keyword)
-    ignore_me_array = ['www', 'http', 'com', 'html', 'co']
-    ignore_me_array.include?(keyword) || keyword.length <= 3
+    ['www', 'http', 'com', 'html', 'co'].include?(keyword) || keyword.length <= 3
   end
 
 end

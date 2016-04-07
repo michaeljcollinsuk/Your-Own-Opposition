@@ -3,7 +3,7 @@ private
 class Suggestion
 
 
-  def initialize(urls=Array.new, url_analysis_klass=UrlAnalysis)
+  def initialize(urls=Array.new, url_analysis_klass=Analysis)
     @url_analysis = url_analysis_klass.new(urls)
     # @suggested_sources = Hash.new
     @urls = urls
