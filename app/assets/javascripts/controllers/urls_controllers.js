@@ -81,8 +81,10 @@ var urlsResource = $resource('http://localhost:3000/urls');
  self.getSuggestions = function() {
    self.suggestionsLoaded = false;
    self.searchingForLink = true;
+
   var webhoseResource = $resource("https://webhose.io/search?token=b68bbb9d-dd4d-4179-95c1-d60a3cdbd303&format=json&q=politics%20" + self.topicKeyword + "%20site%3A"+ self.keyword + ".co.uk");
    webhoseResource.get().$promise.then(function(data) {
+
      self.articleLoaded = true;
      self.articles = data.posts;
      self.urlLinks = self.articles.map(function (article){

@@ -2,7 +2,6 @@ private
 
 class UrlAnalysis
 
-
   def initialize(user_urls= Array.new, url_type=Papers, url_parser=UrlParser)
     @url_parser = url_parser.new(user_urls, url_type.new)
     @papers = @url_parser.papers
