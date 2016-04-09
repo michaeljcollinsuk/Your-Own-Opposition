@@ -3,7 +3,8 @@ require 'rails_helper'
 describe MediaDiet, :type => :class do
   let(:dummy_topics) {[:brexit, :cameron, :cameron, :brexit, :EU, :cameron]}
   let(:dummy_sources) {[:dailymail, :dailymail, :guardian, :dailymail, :buzzfeed]}
-
+  let(:dummy_bias_calculator_klass) {double :dummy_bias_calculator_klass}
+  let(:dummy_bias_calculator) {double :dummy_bias_calculator}
   subject(:media_diet_topics) {described_class.new(dummy_topics)}
   subject(:media_diet_sources) {described_class.new(dummy_sources)}
 
@@ -35,5 +36,18 @@ describe MediaDiet, :type => :class do
       media_diet_topics.analyse_composition
       expect(media_diet_topics.composition).to eq({:cameron => 50, :brexit => 33, :EU => 16})
     end
+  end
+
+  describe '#current_bias' do
+
+    before do
+      allow(dummy_bias_calculator_klass).to receive(:new).and_return(dummy_bias_calculator)
+    end
+
+    it 'instantiates a new instance of BiasCalculator with media diet components' do
+      expect(dummy_bias_calculator_klass).to receive(:new).with(media_diet_sources.components)
+      media_diet_sources.current_bias(dummy_bias_calculator_klass)
+    end
+
   end
 end

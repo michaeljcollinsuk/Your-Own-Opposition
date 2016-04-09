@@ -14,8 +14,8 @@ attr_accessor :composition
     end
   end
 
-  def current_bias(papers, bias_calculator=BiasCalculator)
-    bias_calculator.new(components, papers)
+  def current_bias(bias_calculator=BiasCalculator)
+    bias_calculator.new(components)
   end
 
 private
