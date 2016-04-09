@@ -3,7 +3,7 @@ class MediaDiet
 attr_reader :components
 attr_accessor :composition
 
-  def initialize(source_or_topic)
+  def initialize(source_or_topic=[])
     @composition = Hash.new
     @components = source_or_topic
   end
@@ -12,6 +12,7 @@ attr_accessor :composition
     components.each do |keyword|
       composition[keyword] = component_percentage(keyword).to_i
     end
+    return
   end
 
   def current_bias(bias_calculator=BiasCalculator)

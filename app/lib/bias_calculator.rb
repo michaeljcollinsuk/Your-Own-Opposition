@@ -1,9 +1,8 @@
 class BiasCalculator
 
-  attr_reader :political_leaning, :papers, :bias_message, :sources_read
+  attr_reader :political_leaning, :bias_message, :sources_read
 
-  def initialize(sources_read, papers=Papers.new)
-    @papers = papers.list
+  def initialize(sources_read)
     @sources_read = sources_read
     @political_leaning = calculate_leaning
     @bias_message = match_bias_message
@@ -13,8 +12,8 @@ class BiasCalculator
     political_leaning_scores.inject(:+) / sources_read.length
   end
 
-  def political_leaning_scores
-    sources_read.map{|source| papers[source]}
+  def political_leaning_scores(papers=Papers.new)
+    sources_read.map{|source| papers.list[source]}
   end
 
   def match_bias_message(messages=Messages.new)

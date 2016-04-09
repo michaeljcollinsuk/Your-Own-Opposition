@@ -1,10 +1,9 @@
 class AnalysisController < ApplicationController
+  include AnalysisHelper
 
   def index
-    data = []
-    urls = current_user.urls.all
-    urls.each {|url| data << url.link}
-    analysis = Analysis.new(data)
+    analysis = UrlAnalysis.new(retrieve_urls)
+    save_to_user(analysis)
     render json: analysis
   end
 end

@@ -31,6 +31,7 @@ UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
   self.showBias = function() {
     self.loaded = true;
     analysisResource.get().$promise.then(function(data){
+      console.log(data);
       self.analysisResponse = data.current_bias;
       self.analysisResponseMessage = data.funny_bias_message;
     });

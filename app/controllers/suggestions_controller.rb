@@ -1,12 +1,9 @@
 class SuggestionsController < ApplicationController
 
-#THIS METHOD IS EXACTLY THE SAME AS THE ONE IN THE ANALYSIS CONTROLLER.
-# USE A HELPER METHOD FOR THIS
   def index
-    data = []
-    urls = current_user.urls.all
-    urls.each { |url| data << url.link }
-    suggestion = Suggestion.new(data)
+    current_analysis = current_user.analyses.last
+    require 'pry'; binding.pry
+    suggestion = Suggestion.new(current_analysis)
     suggestion.make_suggestion
     render json: suggestion
   end

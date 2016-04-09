@@ -1,14 +1,8 @@
-private
-
 class Suggestion
 
 
-  def initialize(urls=Array.new, url_analysis_klass=Analysis)
-    @url_analysis = url_analysis_klass.new(urls)
-    # @suggested_sources = Hash.new
-    @urls = urls
-    # @current_bias = url_analysis.political_leaning_perc
-    @topic_suggestions = []
+  def initialize(url_analysis)
+    @analysis_based_on = url_analysis
   end
 
   def make_suggestion
