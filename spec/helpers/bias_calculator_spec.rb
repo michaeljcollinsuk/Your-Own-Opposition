@@ -6,9 +6,9 @@ describe BiasCalculator, :type => :class do
   let(:dummy_left_sources) {[:theguardian, :thetimes, :bbc, :morningstar]}
   subject(:bias_calculator_klass) {described_class}
 
-  subject(:bias_calculator_right) {described_class.new(dummy_right_sources, dummy_papers)}
-  subject(:bias_calculator_left) {described_class.new(dummy_left_sources, dummy_papers)}
-  subject(:bias_calculator) {described_class.new(dummy_right_sources, dummy_papers)}
+  subject(:bias_calculator_right) {described_class.new(dummy_right_sources)}
+  subject(:bias_calculator_left) {described_class.new(dummy_left_sources)}
+  subject(:bias_calculator) {described_class.new(dummy_right_sources)}
 
   before do
     allow(dummy_papers).to receive(:list)
@@ -28,7 +28,6 @@ describe BiasCalculator, :type => :class do
 
   describe 'on #initialize' do
 
-
     it 'calls #calculate_leaning with sources_read to find political_leaning' do
       expect_any_instance_of(bias_calculator_klass).to receive(:calculate_leaning)
       bias_calculator_right.political_leaning
@@ -43,10 +42,6 @@ describe BiasCalculator, :type => :class do
 
   describe 'once #initialized' do
 
-    it 'is instantiated with a list of papers' do
-      expect(bias_calculator_right.papers).to eq(dummy_papers.list)
-    end
-
     it 'stores an array of the most recent sources read' do
       expect(bias_calculator_right.sources_read).to eq(dummy_right_sources)
     end
@@ -58,7 +53,6 @@ describe BiasCalculator, :type => :class do
     before do
       allow(bias_calculator).to receive(:political_leaning_scores).and_return([100, -100])
       allow(bias_calculator).to receive(:sources_read).and_return([:dailymail, :theguardian])
-
     end
 
     it 'calls #political_leaning_scores to retrieve each papers political leaning' do
@@ -156,32 +150,3 @@ describe BiasCalculator, :type => :class do
     end
   end
 end
-
-# context 'calculating political bias #political_leaning_scores' do
-#   subject(:url_analysis) {described_class.new(url_parser_klass, papers_klass, url_parser_klass)}
-#
-#     describe '#political_leaning_perc' do
-#
-#
-#
-#     end
-#
-#     describe '#political_leaning_scores' do
-#
-#     it 'returns an array of the scores out of 100 for political leniencies' do
-#       expect(analysis.political_leaning_scores).to include(80, 100, -100)
-#     end
-#   end
-# end
-#
-#
-# describe '#find_right_message' do
-#   subject(:url_analysis) {described_class.new(url_parser_klass, papers_klass, url_parser_klass)}
-#
-#
-#   it 'returns an appropriate messaged based on political_leaning_perc' do
-#     expect(url_analysis.find_right_message).to eq("benefit-scrounger blamer")
-#   end
-#
-# end
-#

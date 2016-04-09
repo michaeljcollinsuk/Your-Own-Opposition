@@ -12,12 +12,14 @@ class BiasCalculator
     political_leaning_scores.inject(:+) / sources_read.length
   end
 
-  def political_leaning_scores(papers=Papers.new)
-    sources_read.map{|source| papers.list[source]}
-  end
-
   def match_bias_message(messages=Messages.new)
     messages.list.select {|score_range| score_range === political_leaning}.values[0]
+  end
+
+  private
+
+  def political_leaning_scores(papers=Papers.new)
+    sources_read.map{|source| papers.list[source]}
   end
 
 end
