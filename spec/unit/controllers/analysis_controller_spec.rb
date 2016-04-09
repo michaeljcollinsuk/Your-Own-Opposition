@@ -9,8 +9,7 @@ describe AnalysisController, type: :controller do
      sign_in user
      get :index
      json = JSON.parse(response.body)
-    #  expected = {"current_bias": -100}
-     expect(json.keys).to contain_exactly("current_bias", "funny_bias_message", "media_diet", "papers", "top_topics", "url_parser")
+     expect(json.keys).to contain_exactly("current_bias", "media_diet", "url_parser", "frequent_topics")
    end
  end
 end

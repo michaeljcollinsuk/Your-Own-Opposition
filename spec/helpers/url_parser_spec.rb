@@ -18,11 +18,19 @@ describe UrlParser, :type => :class do
                             thetimes: 60,
                             express: 20,
                             morningstar: -60}}
-  subject(:url_parser) {described_class.new(user_urls, dummy_papers)}
+  subject(:url_parser) {described_class.new(user_urls)}
 
     before do
       allow(dummy_papers).to receive(:list).and_return(dummy_papers_list)
+      url_parser.papers
     end
+
+  describe '#papers' do
+
+    it 'retrieves the hash of papers with titles and political leaning scores' do
+      expect(url_parser.papers).to eq(dummy_papers_list)
+    end
+  end
 
   describe '#news_source_list' do
 
@@ -41,11 +49,6 @@ describe UrlParser, :type => :class do
 
     it 'returns an array of keywords as topics' do
       expect(url_parser.topics_list).to include(:osborne, :speech)
-    end
-
-    xit 'calls extract_keywords with each url, plus once for news source list' do
-      expect(url_parser).to receive(:extract_keywords)
-      url_parser.topics_list
     end
 
     it 'calls news_source_list so to remove news sources from list' do
