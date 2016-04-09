@@ -5,8 +5,8 @@ let(:link) {'http://www.theguardian.com/uk-news/2016/mar/17/budget-2016-osborne-
 
   before do
     user = FactoryGirl.create(:user, password: 'password', email: 'bob@bob.com', password_confirmation: 'password')
-    sign_in user
     FactoryGirl.create(:url, link: link, user: user)
+    sign_in user
   end
 
   describe '#retrieve_urls' do
