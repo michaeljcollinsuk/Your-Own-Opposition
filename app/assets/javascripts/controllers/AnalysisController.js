@@ -32,8 +32,8 @@ UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
     self.loaded = true;
     analysisResource.get().$promise.then(function(data){
       console.log(data);
-      self.analysisResponse = data.current_bias;
-      self.analysisResponseMessage = data.funny_bias_message;
+      self.analysisResponse = data.bias.political_leaning;
+      self.analysisResponseMessage = data.bias.bias_message;
     });
   };
 

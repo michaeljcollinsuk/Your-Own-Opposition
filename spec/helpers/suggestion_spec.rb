@@ -10,8 +10,8 @@ describe Suggestion, :type => :class do
                         bbc: 5,
                         theguardian: -100,
                         mirror: -80,
-                        sun: 100,
-                        huffington_post: -40,
+                        thesun: 100,
+                        huffingtonpost: -40,
                         buzzfeed: -20,
                         independent: -20,
                         thetimes: 60,
@@ -201,7 +201,7 @@ describe Suggestion, :type => :class do
 
         it 'it returns only left wing sources with scores smaller than score needed' do
           suggestion_left.find_suggestion(50)
-          expect(suggestion_left.suggested_sources).to eq({:huffington_post=>2, :buzzfeed=>3, :independent=>3})
+          expect(suggestion_left.suggested_sources).to eq({:huffingtonpost=>2, :buzzfeed=>3, :independent=>3})
         end
 
       end

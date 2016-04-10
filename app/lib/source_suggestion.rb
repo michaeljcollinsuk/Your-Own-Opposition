@@ -1,0 +1,3 @@
+class SourceSuggestion
+
+end

@@ -1,14 +1,24 @@
 class Suggestion
 
-
   def initialize(url_analysis)
-    @analysis_based_on = url_analysis
+    @suggestion_requirements = new_suggestion_requirements(url_analysis)
+    @best_source = make_source_suggestion.top_source
+    @multiple_sources = make_source_suggestion.recommended_reading
+    @best_topic = new_topic_suggester(url_analysis.frequent_topics)
   end
 
-  def make_suggestion
-    suggest_topic
-    eliminate_bias
+  def make_source_suggestion
+    new_bias_elimination_requirements.new_source_suggester
   end
+
+  def new_suggestion_requirements(url_analysis, bias_eliminator=BiasEliminator)
+    bias_eliminator.new(url_analysis)
+  end
+
+  def new_topic_suggester(frequent_topics, topic_suggestions=TopicSuggestion)
+    topic_suggestions.new(frequent_topics)
+  end
+
 
 
   # def suggest_topic
