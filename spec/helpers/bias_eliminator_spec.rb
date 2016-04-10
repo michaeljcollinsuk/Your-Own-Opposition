@@ -96,8 +96,75 @@ describe BiasEliminator, :type => :class do
 
   describe '#calculate_score_needed' do
 
-    # it 'returns :balanced if the bias_score is 0' do
-    #   expect(bias_eliminator_balanced.calculate_score_needed())
-    # end
+    it 'returns :balanced if the bias_score is 0' do
+      expect(bias_eliminator_balanced.calculate_score_needed).to eq(:balanced)
+    end
+
+    it 'returns the bias_score *-1' do
+      expect(bias_eliminator_right.calculate_score_needed).to eq(-60)
+      expect(bias_eliminator_left.calculate_score_needed).to eq(60)
+    end
+  end
+
+  describe '#filter_sources' do
+
+    context 'already balanced' do
+
+      it 'checks if the bias_score is already_balanced?' do
+        expect(bias_eliminator_balanced).to receive(:already_balanced?).and_return(true)
+        bias_eliminator_balanced.filter_sources
+      end
+
+      it 'returns :balanced if the bias_score is 0' do
+        expect(bias_eliminator_balanced.filter_sources).to eq(:balanced)
+      end
+
+      it 'does not attempt to select papers if the bias score is already balanced' do
+        expect(bias_eliminator_balanced).not_to receive(:papers)
+        bias_eliminator_balanced.filter_sources
+      end
+
+    end
+
+    context 'right-wing' do
+
+      it 'checks if the bias_score is already_balanced?' do
+        expect(bias_eliminator_right).to receive(:already_balanced?).and_return(false)
+        bias_eliminator_right.filter_sources
+      end
+
+      # it 'selects the paper sources that have a bias rating between score_needed and 0' do
+      #   expect(bias_eliminator_right).to receive(:papers)
+      #   bias_eliminator_right.filter_sources
+      # end
+
+      it 'returns left-wing sources if bias score is positive/right' do
+        expect(bias_eliminator_right.filter_sources).to eq({independent: -20,
+                                                           huffingtonpost: -40,
+                                                           buzzfeed: -20,
+                                                           morningstar: -60})
+      end
+    end
+
+    context 'left-wing' do
+
+      it 'checks if the bias_score is already_balanced?' do
+        expect(bias_eliminator_left).to receive(:already_balanced?).and_return(false)
+        bias_eliminator_left.filter_sources
+      end
+
+      # it 'selects the paper sources that have a bias rating between score_needed and 0' do
+      #   expect(bias_eliminator_left).to receive(:papers).and_return({thetimes: 60,
+      #                                                                express: 20,
+      #                                                                bbc: 5})
+      #   bias_eliminator_left.filter_sources
+      # end
+
+      it 'returns right-wing sources if bias score is negative/left' do
+        expect(bias_eliminator_left.filter_sources).to eq({thetimes: 60,
+                                                           express: 20,
+                                                           bbc: 5})
+      end
+    end
   end
 end

@@ -14,13 +14,14 @@ class BiasEliminator
   end
 
   def calculate_score_needed
-    :balanced if bias_score == 0
-    bias_score * -1
+    already_balanced? ? :balanced : bias_score * -1
   end
 
   def filter_sources
-    papers.select do |source, rating|
-      need_left? ? left(rating) : right(rating)
+    unless already_balanced?
+      papers.select {|source, rating| need_left? ? left(rating) : right(rating)}
+    else
+      :balanced
     end
   end
 
@@ -28,7 +29,12 @@ class BiasEliminator
     sources.list
   end
 
+
   private
+
+  def already_balanced?
+    bias_score == 0 || score_needed == :balanced
+  end
 
   def need_left?
     score_needed < 0
