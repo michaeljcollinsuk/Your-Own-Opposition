@@ -1,16 +1,11 @@
 class BiasEliminator
 
-  attr_accessor :score_needed, :bias_score
-  attr_reader :filtered_sources
+  attr_accessor :score_needed, :bias_score, :filtered_sources
 
   def initialize(bias_score)
     @bias_score = bias_score
     @score_needed = calculate_score_needed
     @filtered_sources = filter_sources
-  end
-
-  def new_source_suggester(source_suggestion=SourceSuggestion)
-    source_suggestion.new(self)
   end
 
   def calculate_score_needed
