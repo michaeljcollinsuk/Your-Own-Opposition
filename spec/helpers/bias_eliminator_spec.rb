@@ -5,7 +5,7 @@ describe BiasEliminator, :type => :class do
   let(:left_bias_score) {-60}
   let(:right_bias_score) {60}
   let(:balanced_score) {0}
-  let(:dummy_papers) {double :dummy_papers}
+  let(:papers) {double :papers}
   let(:source_suggestion_klass) {double :source_suggestion_klass}
   let(:source_suggestion) {double :source_suggestion}
 
@@ -15,7 +15,7 @@ describe BiasEliminator, :type => :class do
 
 
   before do
-    allow(dummy_papers).to receive(:list).and_return({dailymail: 100,
+    allow(papers).to receive(:list).and_return({dailymail: 100,
                                                        telegraph: 80,
                                                        bbc: 5,
                                                        theguardian: -100,
@@ -27,9 +27,9 @@ describe BiasEliminator, :type => :class do
                                                        thetimes: 60,
                                                        express: 20,
                                                        morningstar: -60})
-    bias_eliminator_left.papers(dummy_papers)
-    bias_eliminator_right.papers(dummy_papers)
-    bias_eliminator_balanced.papers(dummy_papers)
+    bias_eliminator_left.papers(papers)
+    bias_eliminator_right.papers(papers)
+    bias_eliminator_balanced.papers(papers)
   end
 
   describe '#initialize' do
@@ -49,7 +49,6 @@ describe BiasEliminator, :type => :class do
     end
 
     context 'after #initialize' do
-
 
       context 'left-wing bias_score' do
 
@@ -88,10 +87,9 @@ describe BiasEliminator, :type => :class do
 
     it 'instantiates a new instance of source_suggestion' do
       expect(source_suggestion_klass).to receive(:new)
-                                     .with(60, bias_eliminator_left.filtered_sources)
+                                     .with(bias_eliminator_left)
       bias_eliminator_left.new_source_suggester(source_suggestion_klass)
     end
-
   end
 
   describe '#calculate_score_needed' do
@@ -123,7 +121,6 @@ describe BiasEliminator, :type => :class do
         expect(bias_eliminator_balanced).not_to receive(:papers)
         bias_eliminator_balanced.filter_sources
       end
-
     end
 
     context 'right-wing' do
@@ -132,11 +129,6 @@ describe BiasEliminator, :type => :class do
         expect(bias_eliminator_right).to receive(:already_balanced?).and_return(false)
         bias_eliminator_right.filter_sources
       end
-
-      # it 'selects the paper sources that have a bias rating between score_needed and 0' do
-      #   expect(bias_eliminator_right).to receive(:papers)
-      #   bias_eliminator_right.filter_sources
-      # end
 
       it 'returns left-wing sources if bias score is positive/right' do
         expect(bias_eliminator_right.filter_sources).to eq({independent: -20,
@@ -152,13 +144,6 @@ describe BiasEliminator, :type => :class do
         expect(bias_eliminator_left).to receive(:already_balanced?).and_return(false)
         bias_eliminator_left.filter_sources
       end
-
-      # it 'selects the paper sources that have a bias rating between score_needed and 0' do
-      #   expect(bias_eliminator_left).to receive(:papers).and_return({thetimes: 60,
-      #                                                                express: 20,
-      #                                                                bbc: 5})
-      #   bias_eliminator_left.filter_sources
-      # end
 
       it 'returns right-wing sources if bias score is negative/left' do
         expect(bias_eliminator_left.filter_sources).to eq({thetimes: 60,

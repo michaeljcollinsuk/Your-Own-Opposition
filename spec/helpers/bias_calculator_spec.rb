@@ -1,29 +1,40 @@
 require 'rails_helper'
 
 describe BiasCalculator, :type => :class do
-  let(:dummy_papers) {double :dummy_papers}
-  let(:dummy_right_sources) {[:dailymail, :telegraph, :telegraph, :telegraph, :dailymail]}
-  let(:dummy_left_sources) {[:theguardian, :thetimes, :bbc, :morningstar]}
-  subject(:bias_calculator_klass) {described_class}
+  let(:papers) {double :papers}
+  let(:right_sources) {[:dailymail, :telegraph, :telegraph, :telegraph, :dailymail]}
+  let(:left_sources) {[:theguardian, :thetimes, :bbc, :morningstar]}
+  let(:bias_calculator_klass) {described_class}
+  let(:messages) {double :messages}
+  let(:bias_calculator_right) {described_class.new(right_sources, messages)}
+  let(:bias_calculator_left) {described_class.new(left_sources, messages)}
+  subject(:bias_calculator) {described_class.new(right_sources, messages)}
 
-  subject(:bias_calculator_right) {described_class.new(dummy_right_sources)}
-  subject(:bias_calculator_left) {described_class.new(dummy_left_sources)}
-  subject(:bias_calculator) {described_class.new(dummy_right_sources)}
 
   before do
-    allow(dummy_papers).to receive(:list)
-                       .and_return({dailymail: 100,
-                                    telegraph: 80,
-                                    bbc: 5,
-                                    theguardian: -100,
-                                    mirror: -80,
-                                    thesun: 100,
-                                    huffingtonpost: -40,
-                                    buzzfeed: -20,
-                                    independent: -20,
-                                    thetimes: 60,
-                                    express: 20,
-                                    morningstar: -60})
+    allow(messages).to receive(:list)
+                   .and_return({-100..-80 => :"Corbynista Commie",
+                                -80..-50 => :"#FeelTheBern Bernista",
+                                -50..-20 => :"Un-washed Hippie Bastard",
+                                -20..-10 => :"Loony Left Leaner",
+                                -10..10 => :"Fence Sitter",
+                                10..20 => :"I'm not Racist but...",
+                                20..50 => :"Benefit-Scrounger Blamer",
+                                50..80 => :"Cameron is Peppa Pig's Best Friend",
+                                80..100 => :"Trump-Loving Bum-Trumpet"})
+    allow(papers).to receive(:list)
+                 .and_return({dailymail: 100,
+                              telegraph: 80,
+                              bbc: 5,
+                              theguardian: -100,
+                              mirror: -80,
+                              thesun: 100,
+                              huffingtonpost: -40,
+                              buzzfeed: -20,
+                              independent: -20,
+                              thetimes: 60,
+                              express: 20,
+                              morningstar: -60})
   end
 
   describe 'on #initialize' do
@@ -43,7 +54,7 @@ describe BiasCalculator, :type => :class do
   describe 'once #initialized' do
 
     it 'stores an array of the most recent sources read' do
-      expect(bias_calculator_right.sources_read).to eq(dummy_right_sources)
+      expect(bias_calculator_right.sources_read).to eq(right_sources)
     end
 
   end
@@ -82,41 +93,27 @@ describe BiasCalculator, :type => :class do
   end
 
   describe '#match_bias_message' do
-    let(:dummy_messages) {double :dummy_messages}
-
-    before do
-      allow(dummy_messages).to receive(:list)
-                           .and_return({-100..-80 => :"Corbynista Commie",
-                                        -80..-50 => :"#FeelTheBern Bernista",
-                                        -50..-20 => :"Un-washed Hippie Bastard",
-                                        -10..-20 => :"Loony Left Leaner",
-                                        -10..10 => :"Fence Sitter",
-                                        10..20 => :"I'm not Racist but...",
-                                        20..50 => :"Benefit-Scrounger Blamer",
-                                        50..80 => :"Cameron is Peppa Pig's Best Friend",
-                                        80..100 => :"Trump-Loving Bum-Trumpet"})
-    end
 
     context 'right-wing political_leanings' do
 
       it 'returns a humerous message based on political_leaning of 15' do
         allow(bias_calculator).to receive(:political_leaning).and_return(15)
-        expect(bias_calculator.match_bias_message).to eq(:"I'm not Racist but...")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"I'm not Racist but...")
       end
 
       it 'returns a humerous message based on political_leaning of 30' do
         allow(bias_calculator).to receive(:political_leaning).and_return(30)
-        expect(bias_calculator.match_bias_message).to eq(:"Benefit-Scrounger Blamer")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Benefit-Scrounger Blamer")
       end
 
       it 'returns a humerous message based on political_leaning of 60' do
         allow(bias_calculator).to receive(:political_leaning).and_return(60)
-        expect(bias_calculator.match_bias_message).to eq(:"Cameron is Peppa Pig's Best Friend")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Cameron is Peppa Pig's Best Friend")
       end
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(90)
-        expect(bias_calculator.match_bias_message).to eq(:"Trump-Loving Bum-Trumpet")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Trump-Loving Bum-Trumpet")
       end
 
     end
@@ -125,27 +122,27 @@ describe BiasCalculator, :type => :class do
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(-90)
-        expect(bias_calculator.match_bias_message).to eq(:"Corbynista Commie")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Corbynista Commie")
       end
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(-60)
-        expect(bias_calculator.match_bias_message).to eq(:"#FeelTheBern Bernista")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"#FeelTheBern Bernista")
       end
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(-30)
-        expect(bias_calculator.match_bias_message).to eq(:"Un-washed Hippie Bastard")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Un-washed Hippie Bastard")
       end
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(-15)
-        expect(bias_calculator.match_bias_message).to eq(:"Loony Left Leaner")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Loony Left Leaner")
       end
 
       it 'returns a humerous message based on political_leaning of 90' do
         allow(bias_calculator).to receive(:political_leaning).and_return(-5)
-        expect(bias_calculator.match_bias_message).to eq(:"Fence Sitter")
+        expect(bias_calculator.match_bias_message(messages)).to eq(:"Fence Sitter")
       end
     end
   end

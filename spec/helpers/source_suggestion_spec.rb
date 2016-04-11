@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe SourceSuggestion, :type => :class do
-  let(:dummy_bias_eliminator_right) {double :dummy_bias_eliminator_right}
-  let(:dummy_bias_eliminator_left) {double :dummy_bias_eliminator_right}
-
+  let(:bias_eliminator_right) {double :bias_eliminator_right}
+  let(:bias_eliminator_left) {double :bias_eliminator_right}
   let(:left_filtered_sources) {{independent: -20,
                                 huffingtonpost: -40,
                                 buzzfeed: -20,
@@ -14,26 +13,26 @@ describe SourceSuggestion, :type => :class do
                                  bbc: 5}}
   let(:right_score_needed) {60}
   let(:left_score_needed) {-60}
-  subject(:source_suggestion_klass) {described_class}
-  subject(:source_suggestion_right) {described_class.new(dummy_bias_eliminator_right)}
-  subject(:source_suggestion_left) {described_class.new(dummy_bias_eliminator_left)}
+  let(:source_suggestion_klass) {described_class}
+  let(:source_suggestion_right) {described_class.new(bias_eliminator_right)}
+  let(:source_suggestion_left) {described_class.new(bias_eliminator_left)}
 
   before do
-    allow(dummy_bias_eliminator_right).to receive(:filtered_sources)
-                                      .and_return(right_filtered_sources)
-    allow(dummy_bias_eliminator_right).to receive(:score_needed)
-                                      .and_return(right_score_needed)
-    allow(dummy_bias_eliminator_left).to receive(:filtered_sources)
-                                      .and_return(left_filtered_sources)
-    allow(dummy_bias_eliminator_left).to receive(:score_needed)
-                                      .and_return(left_score_needed)
+    allow(bias_eliminator_right).to receive(:filtered_sources)
+                                .and_return(right_filtered_sources)
+    allow(bias_eliminator_right).to receive(:score_needed)
+                                .and_return(right_score_needed)
+    allow(bias_eliminator_left).to receive(:filtered_sources)
+                               .and_return(left_filtered_sources)
+    allow(bias_eliminator_left).to receive(:score_needed)
+                               .and_return(left_score_needed)
   end
 
   describe '#initialize' do
 
     it 'stores an instance of bias_eliminator as requirements' do
-      expect(source_suggestion_left.requirements).to eq(dummy_bias_eliminator_left)
-      expect(source_suggestion_right.requirements).to eq(dummy_bias_eliminator_right)
+      expect(source_suggestion_left.requirements).to eq(bias_eliminator_left)
+      expect(source_suggestion_right.requirements).to eq(bias_eliminator_right)
     end
 
   end

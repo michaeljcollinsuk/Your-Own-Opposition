@@ -14,10 +14,10 @@ attr_reader :requirements
   end
 
   def top_source
-    recommend_reading.min_by{|source, quantity| quantity}
+    recommend_reading.min_by{ |source, quantity| quantity }
   end
 
-private
+  private
 
   def suggest_quantity_to_read(rating)
     (score_to_match / rating).abs

@@ -14,14 +14,14 @@ describe UrlAnalysis, :type => :class do
   let(:media_diet_klass) {double :media_diet_klass}
   let(:media_diet) {double :media_diet}
 
-  let(:dummy_bias) {double :dummy_bias}
+  let(:bias) {double :bias}
 
   subject(:analysis_klass) {described_class}
   subject(:analysis) {described_class.new(user_urls, url_parser_klass)}
 
     before do
       allow(media_diet_klass).to receive(:new).and_return(media_diet)
-      allow(media_diet).to receive(:current_bias).and_return(dummy_bias)
+      allow(media_diet).to receive(:current_bias).and_return(bias)
       allow(url_parser_klass).to receive(:new).and_return(url_parser)
       allow(url_parser).to receive(:news_source_list).and_return([:dailymail, :telegraph, :theguardian])
       allow(url_parser).to receive(:topics_list).and_return([:osborne, :osborne, :osborne, :osborne, :warn, :warn, :storm, :storm])
@@ -128,7 +128,7 @@ describe UrlAnalysis, :type => :class do
     describe '#retrieve_bias' do
 
       before do
-        allow(media_diet).to receive(:current_bias).and_return(dummy_bias)
+        allow(media_diet).to receive(:current_bias).and_return(bias)
       end
 
       it 'calls #new_media_diet with sources to analyse' do

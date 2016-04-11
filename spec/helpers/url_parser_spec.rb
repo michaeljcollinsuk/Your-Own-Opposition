@@ -5,8 +5,8 @@ describe UrlParser, :type => :class do
   let(:telegraph_url) {'http://www.telegraph.co.uk/business/2016/03/16/budget-2016-george-osbornes-speech-live0/'}
   let(:guardian_url) {'http://www.theguardian.com/business/Budget'}
   let(:user_urls) {[daily_mail_url, telegraph_url, guardian_url]}
-  let(:dummy_papers) {double :dummy_papers}
-  let(:dummy_papers_list) {{dailymail: 100,
+  let(:papers) {double :papers}
+  let(:papers_list) {{dailymail: 100,
                             telegraph: 80,
                             bbc: 5,
                             theguardian: -100,
@@ -21,14 +21,14 @@ describe UrlParser, :type => :class do
   subject(:url_parser) {described_class.new(user_urls)}
 
     before do
-      allow(dummy_papers).to receive(:list).and_return(dummy_papers_list)
+      allow(papers).to receive(:list).and_return(papers_list)
       url_parser.papers
     end
 
   describe '#papers' do
 
     it 'retrieves the hash of papers with titles and political leaning scores' do
-      expect(url_parser.papers).to eq(dummy_papers_list)
+      expect(url_parser.papers).to eq(papers_list)
     end
   end
 

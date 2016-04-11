@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe MediaDiet, :type => :class do
-  let(:dummy_topics) {[:brexit, :cameron, :cameron, :brexit, :EU, :cameron]}
-  let(:dummy_sources) {[:dailymail, :dailymail, :guardian, :dailymail, :buzzfeed]}
-  let(:dummy_bias_calculator_klass) {double :dummy_bias_calculator_klass}
-  let(:dummy_bias_calculator) {double :dummy_bias_calculator}
-  subject(:media_diet_topics) {described_class.new(dummy_topics)}
-  subject(:media_diet_sources) {described_class.new(dummy_sources)}
+  let(:topics) {[:brexit, :cameron, :cameron, :brexit, :EU, :cameron]}
+  let(:sources) {[:dailymail, :dailymail, :guardian, :dailymail, :buzzfeed]}
+  let(:bias_calculator_klass) {double :bias_calculator_klass}
+  let(:bias_calculator) {double :bias_calculator}
+  subject(:media_diet_topics) {described_class.new(topics)}
+  subject(:media_diet_sources) {described_class.new(sources)}
 
 
   describe '#initialize' do
@@ -16,13 +16,12 @@ describe MediaDiet, :type => :class do
     end
 
     it 'stores an array of (sources or) topics to analyse in diet_components' do
-      expect(media_diet_topics.components).to eq(dummy_topics)
+      expect(media_diet_topics.components).to eq(topics)
     end
 
     it 'stores an array of sources (or topics) to analyse in diet_components' do
-      expect(media_diet_sources.components).to eq(dummy_sources)
+      expect(media_diet_sources.components).to eq(sources)
     end
-
   end
 
   describe '#analyse_composition' do
@@ -41,13 +40,12 @@ describe MediaDiet, :type => :class do
   describe '#current_bias' do
 
     before do
-      allow(dummy_bias_calculator_klass).to receive(:new).and_return(dummy_bias_calculator)
+      allow(bias_calculator_klass).to receive(:new).and_return(bias_calculator)
     end
 
     it 'instantiates a new instance of BiasCalculator with media diet components' do
-      expect(dummy_bias_calculator_klass).to receive(:new).with(media_diet_sources.components)
-      media_diet_sources.current_bias(dummy_bias_calculator_klass)
+      expect(bias_calculator_klass).to receive(:new).with(media_diet_sources.components)
+      media_diet_sources.current_bias(bias_calculator_klass)
     end
-
   end
 end

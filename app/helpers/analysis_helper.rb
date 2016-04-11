@@ -1,5 +1,5 @@
 module AnalysisHelper
-
+  
   def retrieve_urls
     data = []
     urls = current_user.urls.all

@@ -16,5 +16,4 @@ describe Messages, :type => :class do
                                      80..100 => :"Trump-Loving Bum-Trumpet"})
     end
   end
-
 end
