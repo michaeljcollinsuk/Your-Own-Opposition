@@ -63,9 +63,14 @@ var urlsResource = $resource('http://localhost:3000/urls');
  self.showSuggestions = function() {
    self.suggestionsLoaded = true;
    suggestionsResource.get().$promise.then(function(data){
-     self.numberToRead = data.best_source[1];
-     self.keyword = data.best_source[0];
-     self.topicKeyword = data.top_topics[0];
+     self.topicSuggestionsResponse = data.url_analysis.top_topics;
+     self.suggestionsResponse = data.best_suggestion;
+     self.keywords = Object.keys(self.suggestionsResponse);
+     self.numberToRead = self.keywords.map(function (key) {
+       return self.suggestionsResponse[key];
+     });
+     self.keyword = self.keywords[0];
+     self.topicKeyword = data.topic_suggestions[0];
    });
  };
 
