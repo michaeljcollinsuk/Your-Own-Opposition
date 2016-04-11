@@ -10,7 +10,7 @@ class BiasEliminator
   end
 
   def new_source_suggester(source_suggestion=SourceSuggestion)
-    source_suggestion.new(score_needed, filtered_sources)
+    source_suggestion.new(self)
   end
 
   def calculate_score_needed
@@ -28,7 +28,6 @@ class BiasEliminator
   def papers(sources=Papers.new)
     sources.list
   end
-
 
   private
 

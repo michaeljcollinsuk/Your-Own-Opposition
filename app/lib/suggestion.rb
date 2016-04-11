@@ -1,23 +1,30 @@
 class Suggestion
 
+  attr_reader :suggestion_requirements
+
   def initialize(url_analysis)
-    @suggestion_requirements = new_suggestion_requirements(url_analysis)
-    @best_source = make_source_suggestion.top_source
-    @multiple_sources = make_source_suggestion.recommended_reading
-    @best_topic = new_topic_suggester(url_analysis.frequent_topics)
+    @suggestion_requirements = new_suggestion_requirements(url_analysis.bias_score)
+    @best_source = source_suggestion.top_source
+    @multiple_sources = source_suggestion.recommended_reading
+    @best_topic = topic_suggestion(url_analysis.frequent_topics)
   end
+
+  def new_suggestion_requirements(bias_score, bias_eliminator=BiasEliminator)
+    bias_eliminator.new(bias_score)
+  end
+
+  # def source_suggestion
+  #   make_source_suggestion.crunch_numbers
+  # end
 
   def make_source_suggestion
-    new_bias_elimination_requirements.new_source_suggester
+    suggestion_requirements.new_source_suggester
   end
 
-  def new_suggestion_requirements(url_analysis, bias_eliminator=BiasEliminator)
-    bias_eliminator.new(url_analysis)
-  end
 
-  def new_topic_suggester(frequent_topics, topic_suggestions=TopicSuggestion)
-    topic_suggestions.new(frequent_topics)
-  end
+  # def new_topic_suggester(frequent_topics, topic_suggestions=TopicSuggestion)
+  #   topic_suggestions.new(frequent_topics)
+  # end
 
 
 
@@ -28,43 +35,8 @@ class Suggestion
   # end
 
 
-  # def eliminate_bias
-  #   if urls.length == 0 || current_bias == 0
-  #     :balanced
-  #   else
-  #     score_needed = (current_bias * (urls.length + 1)) / urls.length
-  #     find_suggestion(score_needed)
-  #   end
-  # end
 
 
-  def find_suggestion(score_needed)
-   papers = url_analysis.papers
-   matches = []
-   papers.select{|source, rating| matches << source if rating == score_needed}
-    if matches.length == 0
-      find_many_suggestions(score_needed, papers)
-      @best_suggestion = find_best_suggestion
-    else
-      @best_suggestion = {matches.pop => 1}
-      matches
-    end
-  end
-
-  def find_many_suggestions(score_needed, papers)
-    shortlist = filter_sources(score_needed, papers)
-    @suggested_sources =
-      shortlist.each do |source, rating|
-        quantity = (score_needed / rating).abs
-        shortlist[source] = quantity > 1 ? quantity : nil
-      end
-    suggested_sources.select!{|source, number| number if number != nil}
-  end
-
-  def find_best_suggestion
-    fewest_needed = suggested_sources.values.sort[0]
-    suggested_sources.select{|source, number| number == fewest_needed}
-  end
 
 
   # def filter_sources(score_needed, papers)
@@ -80,8 +52,7 @@ class Suggestion
   #   score_needed > 0
   # end
 
-  public
-  attr_reader :url_analysis, :suggested_sources, :urls, :current_bias, :best_suggestion
+
   # :topic_suggestions
 
 
