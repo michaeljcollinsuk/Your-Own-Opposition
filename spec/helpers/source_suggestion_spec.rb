@@ -31,53 +31,46 @@ describe SourceSuggestion, :type => :class do
 
   describe '#initialize' do
 
-    context 'on #initialize' do
-
-      it 'calls #recommend_reading to get the recommended reading list' do
-        expect_any_instance_of(source_suggestion_klass).to receive(:recommend_reading)
-                                                       .and_return({bbc: 12,
-                                                                    express: 3,
-                                                                    thetimes: 1})
-        source_suggestion_klass.new(dummy_bias_eliminator_right)
-      end
-
-      it 'calls #find_best_suggestion for most effective source to eliminate bias' do
-        expect_any_instance_of(source_suggestion_klass).to receive(:find_best_suggestion)
-        source_suggestion_klass.new(dummy_bias_eliminator_right)
-      end
-
+    it 'stores an instance of bias_eliminator as requirements' do
+      expect(source_suggestion_left.requirements).to eq(dummy_bias_eliminator_left)
+      expect(source_suggestion_right.requirements).to eq(dummy_bias_eliminator_right)
     end
 
-    context 'once #initialized' do
+  end
 
-      it 'stores an instance of bias_eliminator as requirements' do
-        expect(source_suggestion_left.requirements).to eq(dummy_bias_eliminator_left)
-        expect(source_suggestion_right.requirements).to eq(dummy_bias_eliminator_right)
-      end
+  describe '#recommend_reading' do
 
-      it 'LEFT stores a hash with source and quantity to read as recommended_reading' do
-        expect(source_suggestion_left.recommended_reading).to eq({independent: 3,
-                                                                  huffingtonpost: 1,
-                                                                  buzzfeed: 3,
-                                                                  morningstar: 1})
-      end
+    it 'LEFT returns a hash with source and quantity to read as recommended_reading' do
+      expect(source_suggestion_left.recommend_reading).to eq({independent: 3,
+                                                              huffingtonpost: 1,
+                                                              buzzfeed: 3,
+                                                              morningstar: 1})
+    end
 
-      it 'RIGHT stores a hash with source and quantity to read as recommended_reading' do
-        expect(source_suggestion_right.recommended_reading).to eq({bbc: 12,
-                                                                   express: 3,
-                                                                  thetimes: 1})
-      end
+    it 'RIGHT returns a hash with source and quantity to read as recommended_reading' do
+      expect(source_suggestion_right.recommend_reading).to eq({bbc: 12,
+                                                              express: 3,
+                                                              thetimes: 1})
+    end
+  end
 
-      it 'LEFT stores the best suggestion, as the recommended source with least quantity to read' do
-        expect(source_suggestion_left.best_source).to eq([:huffingtonpost, 1])
-        expect(source_suggestion_right.best_source).to eq([:thetimes, 1])
-      end
+  describe '#top_source' do
 
-      it 'RIGHT stores the best suggestion, as the recommended source with least quantity to read' do
-        expect(source_suggestion_right.best_source).to eq([:thetimes, 1])
-      end
+    it 'calls recommend_reading to find the key-value pair with the lowest quantity' do
+      expect(source_suggestion_left).to receive(:recommend_reading)
+                                    .and_return({independent: 3,
+                                                huffingtonpost: 1,
+                                                buzzfeed: 3,
+                                                morningstar: 1})
+      source_suggestion_left.top_source
+    end
 
+    it 'LEFT returns an array with the name of the source and quantity to read' do
+      expect(source_suggestion_left.top_source).to eq([:huffingtonpost, 1])
+    end
 
+    it 'RIGHT returns an array with the name of the source and quantity to read' do
+      expect(source_suggestion_right.top_source).to eq([:thetimes, 1])
     end
   end
 end
