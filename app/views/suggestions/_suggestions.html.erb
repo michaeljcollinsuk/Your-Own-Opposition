@@ -16,7 +16,7 @@
 
 <aside id="suggestion-served"
        ng-show="analysis.articleLoaded"
-       ng-repeat="analysisLink in analysis.analysisLinks track by $index | limitTo:quantity">
+       ng-repeat="link in analysis.urlLinks track by $index | limitTo:quantity">
 
   <a ng-show="analysis.articleLoaded" href="{{urlLink}}">
     <p id="thislink" >{{analysis.articleTitles[$index]}}</p>
