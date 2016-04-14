@@ -1,11 +1,8 @@
 class SuggestionsController < ApplicationController
 
   def index
-    data = []
-    urls = current_user.urls.all
-    urls.each { |url| data << url.link }
-    suggestion = Suggestion.new(data)
-    suggestion.make_suggestion
+    current_analysis = current_user.analyses.last
+    suggestion = Suggestion.new(current_analysis)
     render json: suggestion
   end
 

@@ -1,65 +1,22 @@
-<% if current_user %>
-<p>Add link</p>
-  <%= form_for @url.new do |f| %>
-    <%= f.label :link %>
-    <%= f.text_field :link, required: true %>
-    <%= f.submit %>
+
+<body ng-controller='AnalysisController as analysis'>
+
+  <% if current_user %>
+    <p>Add link</p>
+      <%= form_for @url.new do |f| %>
+        <%= f.label :link %>
+        <%= f.text_field :link, required: true %>
+        <%= f.submit %>
   <% end %>
 
-<% if @url.any? && current_user %>
-<body ng-controller='UrlsController as url'>
-  <button ng-hide="url.userUrlsLoaded" ng-click="url.showRecentUrls()">Show me what I've read recently</button>
-  <button ng-show="url.userUrlsLoaded" ng-click="url.hideRecentUrls()">Hide what I've read recently</button>
-<aside ng-show="url.userUrlsLoaded" >
-<div id='urls'>
-<% current_user.urls.each do |url| %>
-  <ul>
-    <!-- <p><a href='<%= url.name if url.user == current_user%>'></a></p> -->
-    <p><a href='<%= url.link if url.user == current_user%>'> <%= url.link %></a></p>
-  </ul>
-  <% end %>
-<% else %>
-  No urls yet
-<% end %>
-</div>
-</aside>
-
+  <%= render "urls/user_urls" %>
 
   <div class="container" ng-view>
-    <section class="analysis">
-      <button ng-hide="url.loaded" ng-click="url.showBias()">Show my bias</button>
-      <button ng-show="url.loaded" ng-click="url.hideBias()">Hide my bias</button>
-      <div id='show_bias' ng-show="url.loaded"> My bias rating: {{url.analysisResponse}} ... {{url.analysisResponseMessage}} </div>
-      <button ng-hide="url.furtherInfoLoaded" ng-click="url.showBreakDown()">Show my media diet</button>
-      <button ng-show="url.furtherInfoLoaded" ng-click="url.hideBreakDown()">Hide my media diet</button>
-      <div id='show_diet' ng-show="url.furtherInfoLoaded">
-        Your media diet:
-        <h2 ng-show="url.furtherInfoLoaded" ng-repeat="source in url.sources track by $index">
-        {{source}} {{url.percentageRead[$index]}}% </h2>
-        - As you can see, not as balanced as it could be.
-      </div>
-    </div>
-    </section>
+    <%= render "analysis/analysis" %>
+    <%= render "suggestions/suggestions" %>
+  </div>
 
-
-    <section class=suggestion>
-      <!-- <div ng-hide="url.searchingForLink"> -->
-      <button ng-hide="url.suggestionsLoaded"  ng-click="url.showSuggestions()">What paper should I read?</button>
-      <button ng-show="url.suggestionsLoaded" ng-click="url.getSuggestions()">Help me balance my bias</button>
-      <div id='suggestions' ng-show="url.suggestionsLoaded" ng-repeat="keyword in url.keywords track by $index"> We suggest that you read {{url.numberToRead[$index]}} articles from {{keyword}} </h1>
-    </div>
-    <div id='crunching_numbers' ng-show="url.searchingForLink"> Crunching the numbers... </div>
-    <aside id="suggestion-served" ng-show="url.articleLoaded" ng-repeat="urlLink in url.urlLinks track by $index | limitTo:quantity">
-      <a ng-show="url.articleLoaded" href="{{urlLink}}">
-        <p id="thislink" >{{url.articleTitles[$index]}}</p>
-        <aside id="article-image">
-        <img id="article-image" src={{url.articleImages[$index]}} alt="article-image">
-      </aside>
-      </a>
-    </div>
-    </section>
-
-<% else %>
-  <p> Sign up to get involved </p>
-<% end %>
+  <% else %>
+    <p> Sign up to get involved </p>
+  <% end %>
 </body>

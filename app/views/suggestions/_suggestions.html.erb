@@ -1,0 +1,27 @@
+<section class=suggestion>
+
+  <button ng-hide="analysis.suggestionsLoaded"  ng-click="analysis.showSuggestions()">What paper should I read?</button>
+  <button ng-show="analysis.suggestionsLoaded" ng-click="analysis.getSuggestions()">Help me balance my bias</button>
+
+  <div id='suggestions'
+       ng-show="analysis.suggestionsLoaded"
+       ng-repeat="paper in analysis.papers">
+    We suggest that you read {{analysis.suggestionData.recommended_reading[paper]}} articles from the {{paper}}
+  </div>
+
+  <div id='crunching_numbers'
+       ng-show="analysis.searchingForLink">
+       Crunching the numbers...
+  </div>
+
+<aside id="suggestion-served"
+       ng-show="analysis.articleLoaded"
+       ng-repeat="link in analysis.urlLinks track by $index | limitTo:quantity">
+
+  <a ng-show="analysis.articleLoaded" href="{{urlLink}}">
+    <p id="thislink" >{{analysis.articleTitles[$index]}}</p>
+    <aside id="article-image">
+    <img id="article-image" src={{analysis.articleImages[$index]}} alt="article-image">
+    </aside>
+  </a>
+</section>

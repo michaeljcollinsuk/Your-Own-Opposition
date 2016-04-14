@@ -1,0 +1,22 @@
+<% if @url.any? && current_user %>
+  <button ng-hide="analysis.showUserUrls" ng-click="analysis.toggleShowRecentUrls()">Show me what I've read recently</button>
+  <button ng-show="analysis.showUserUrls" ng-click="analysis.toggleShowRecentUrls()">Hide what I've read recently</button>
+
+<aside ng-show="analysis.showUserUrls" >
+
+  <div id='urls'>
+    <% current_user.urls.each do |url| %>
+      <ul>
+        <p><a href='<%= url.link if url.user == current_user%>'> <%= url.link %></a></p>
+      </ul>
+    <% end %>
+
+<% else %>
+
+  No urls yet
+
+<% end %>
+
+  </div>
+
+</aside>

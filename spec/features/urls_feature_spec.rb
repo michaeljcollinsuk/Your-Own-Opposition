@@ -40,7 +40,7 @@ feature 'Adding URLs' do
     scenario '-> users can only see their own urls' do
       create_url
       click_link 'Sign out'
-      signup2
+      signup('dave@bob.com', 'password')
       expect(page).not_to have_content('www.firstlink.com')
     end
 
