@@ -5,8 +5,8 @@
 
   <div id='suggestions'
        ng-show="analysis.suggestionsLoaded"
-       ng-repeat="keyword in analysis.keywords track by $index">
-    We suggest that you read {{analysis.numberToRead[$index]}} articles from {{keyword}}
+       ng-repeat="paper in analysis.papers">
+    We suggest that you read {{analysis.suggestionData.recommended_reading[paper]}} articles from the {{paper}}
   </div>
 
   <div id='crunching_numbers'

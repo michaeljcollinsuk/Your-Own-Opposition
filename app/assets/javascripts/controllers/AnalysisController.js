@@ -1,6 +1,7 @@
 
-UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
+UrlsApp.controller('AnalysisController', ['$resource', '$http', function($resource, $http) {
   var self = this;
+  // var analysisResource = 'http://localhost:3000/analysis';
   var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
   var analysisResponseMessage = "";
@@ -30,12 +31,25 @@ UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
 
   self.showBias = function() {
     self.loaded = true;
-    analysisResource.get().$promise.then(function(data){
+    analysisResource.get().$promise.then(function successCallback(data){
       console.log(data);
       self.analysisResponse = data.bias.political_leaning;
       self.analysisResponseMessage = data.bias.bias_message;
     });
   };
+
+  // self.showBias = function() {
+  //   self.loaded = true;
+  //   $http({
+  //     method: 'GET',
+  //     url: analysisResource
+  //   }).then(function successCallback(response){
+  //     console.log(response);
+  //     self.analysisResponse = response.data.bias.political_leaning;
+  //     self.analysisResponseMessage = response.data.bias.bias_message;
+  //   });
+  // };
+
 
   self.hideBias = function() {
     self.loaded = false;
@@ -59,21 +73,30 @@ UrlsApp.controller('AnalysisController', ['$resource', function($resource) {
 var suggestionsResource = $resource('http://localhost:3000/suggestions');
 var urlsResource = $resource('http://localhost:3000/urls');
 
+ //
+ // self.showSuggestions = function() {
+ //   self.suggestionsLoaded = true;
+ //   suggestionsResource.get().$promise.then(function(data){
+ //     self.topicSuggestionsResponse = data.url_analysis.top_topics;
+ //     self.suggestionsResponse = data.best_suggestion;
+ //     self.keywords = Object.keys(self.suggestionsResponse);
+ //     self.numberToRead = self.keywords.map(function (key) {
+ //       return self.suggestionsResponse[key];
+ //     });
+ //     self.keyword = self.keywords[0];
+ //     self.topicKeyword = data.topic_suggestions[0];
+ //   });
+ // };
 
  self.showSuggestions = function() {
    self.suggestionsLoaded = true;
    suggestionsResource.get().$promise.then(function(data){
-     self.topicSuggestionsResponse = data.url_analysis.top_topics;
-     self.suggestionsResponse = data.best_suggestion;
-     self.keywords = Object.keys(self.suggestionsResponse);
-     self.numberToRead = self.keywords.map(function (key) {
-       return self.suggestionsResponse[key];
-     });
-     self.keyword = self.keywords[0];
-     self.topicKeyword = data.topic_suggestions[0];
+     self.suggestionData = data;
+     debugger
+     self.papers = Object.keys(self.suggestionData.recommended_reading);
+     debugger
    });
  };
-
 
 
  self.articleLoaded = false;
