@@ -7,5 +7,11 @@ UrlsApp.factory('analysisFactory', ['$resource', function($resource) {
     return analysisResource.get();
   };
 
+  self.getPercentageRead = function(sources, mediaDiet) {
+    return sources.map(function(key) {
+      return mediaDiet[key];
+    });
+  };
+
   return self;
 }]);

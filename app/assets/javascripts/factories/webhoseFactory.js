@@ -27,11 +27,3 @@ UrlsApp.factory('webhoseFactory', ['$resource', function($resource) {
 
   return self;
 }]);
-
-
-// self.articleImages = self.articles.map(function (article){
-//                  return article.thread.main_image;
-//                  });
-// self.articleTitles = self.articles.map(function (article){
-//                  return article.title;
-//                  });

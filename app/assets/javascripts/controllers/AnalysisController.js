@@ -1,31 +1,11 @@
-
 UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFactory', 'analysisFactory', 'webhoseFactory', function($resource, $http, suggestionFactory, analysisFactory, webhoseFactory) {
   var self = this;
-  var analysisResponse = [];
-  var analysisResponseMessage = "";
-  var breakdownResponse = [];
-  var sources = [];
-  var percentageRead = [];
-  var suggestionsResponse = [];
-  var sourceSuggestion = [];
-  var urlLinks = [];
-  var articleImages = [];
-  var articleTitles = [];
-  var keywords = [];
-  var keyword = "";
-  var topicKeywords = [];
-  var topKeywords = [];
-  var mostRelevant = [];
-  var topicValues = [];
-  var numberToRead = [];
-  var quantity = "";
   self.showUserUrls = false;
 
 
   self.toggleShowRecentUrls = function() {
     self.showUserUrls = !self.showUserUrls;
   };
-
 
   self.showBias = function() {
     analysisFactory.analysisApiCall().$promise.then(function (response) {
@@ -40,13 +20,10 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
   };
 
   self.showBreakDown = function(){
-    self.furtherInfoLoaded = true;
     analysisFactory.analysisApiCall().$promise.then(function(response){
-      self.breakdownResponse = response.media_diet;
-      self.sources = Object.keys(self.breakdownResponse);
-      self.percentageRead = self.sources.map(function (key) {
-                        return self.breakdownResponse[key];
-                        });
+      self.furtherInfoLoaded = true;
+      self.sources = Object.keys(response.media_diet);
+      self.percentageRead = analysisFactory.getPercentageRead(self.sources, response.media_diet);
   });
 
   self.hideBreakDown = function() {
@@ -54,21 +31,16 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
   };
 };
 
-var urlsResource = $resource('http://localhost:3000/urls');
-
  self.showSuggestions = function() {
    suggestionFactory.suggestionApiCall().$promise.then(function(response){
      self.suggestionsLoaded = true;
-     self.suggestionData = response;
-     self.papers = Object.keys(self.suggestionData.recommended_reading);
+     self.papers = Object.keys(response.recommended_reading);
      self.newsSource = self.papers[0];
      self.topKeyword = response.best_topic[0];
      self.numberToRead = response.recommended_reading[self.papers[0]];
    });
  };
 
- self.articleLoaded = false;
- 
  self.getSuggestions = function() {
    self.suggestionsLoaded = false;
    self.searchingForLink = true;
@@ -82,6 +54,5 @@ var urlsResource = $resource('http://localhost:3000/urls');
     self.searchingForLink = false;
    });
  };
-
 
 }]);
