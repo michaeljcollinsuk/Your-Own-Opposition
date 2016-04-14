@@ -7,5 +7,31 @@ UrlsApp.factory('webhoseFactory', ['$resource', function($resource) {
     return webhoseResource.get();
   };
 
+  self.getUrlLinks = function(webhoseData) {
+    return webhoseData.map(function(article) {
+      return article.url;
+    });
+  };
+
+  self.getArticleImages = function(webhoseData) {
+    return webhoseData.map(function(article) {
+      return article.thread.main_image;
+    });
+  };
+
+  self.getArticleTitles = function(webhoseData) {
+    return webhoseData.map(function(article) {
+      return article.title;
+    });
+  };
+
   return self;
 }]);
+
+
+// self.articleImages = self.articles.map(function (article){
+//                  return article.thread.main_image;
+//                  });
+// self.articleTitles = self.articles.map(function (article){
+//                  return article.title;
+//                  });

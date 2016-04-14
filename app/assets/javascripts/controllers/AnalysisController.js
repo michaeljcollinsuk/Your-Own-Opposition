@@ -68,24 +68,18 @@ var urlsResource = $resource('http://localhost:3000/urls');
  };
 
  self.articleLoaded = false;
+ 
  self.getSuggestions = function() {
    self.suggestionsLoaded = false;
    self.searchingForLink = true;
 
    webhoseFactory.webhoseSuggestions(self.topKeyword, self.newsSource).$promise.then(function(response) {
-     self.articleLoaded = true;
-     self.articles = response.posts;
-     self.urlLinks = self.articles.map(function (article){
-                      return article.url;
-                      });
-    self.articleImages = self.articles.map(function (article){
-                     return article.thread.main_image;
-                     });
-    self.articleTitles = self.articles.map(function (article){
-                     return article.title;
-                     });
+    self.urlLinks = webhoseFactory.getUrlLinks(response.posts);
+    self.articleImages = webhoseFactory.getArticleImages(response.posts);
+    self.articleTitles = webhoseFactory.getArticleTitles(response.posts);
     self.quantity = self.numberToRead;
-     self.searchingForLink = false;
+    self.articleLoaded = true;
+    self.searchingForLink = false;
    });
  };
 
