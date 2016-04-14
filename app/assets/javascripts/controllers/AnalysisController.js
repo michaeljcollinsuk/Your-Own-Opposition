@@ -1,8 +1,6 @@
 
-UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFactory', function($resource, $http, suggestionFactory) {
+UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFactory', 'analysisFactory', function($resource, $http, suggestionFactory, analysisFactory) {
   var self = this;
-  // var analysisResource = 'http://localhost:3000/analysis';
-  var analysisResource = $resource('http://localhost:3000/analysis');
   var analysisResponse = [];
   var analysisResponseMessage = "";
   var breakdownResponse = [];
@@ -31,9 +29,9 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
 
   self.showBias = function() {
     self.loaded = true;
-    analysisResource.get().$promise.then(function successCallback(data){
-      self.analysisResponse = data.bias.political_leaning;
-      self.analysisResponseMessage = data.bias.bias_message;
+    analysisFactory.analysisApiCall().$promise.then(function (response) {
+      self.analysisResponse = response.bias.political_leaning;
+      self.analysisResponseMessage = response.bias.bias_message;
     });
   };
 
@@ -43,8 +41,8 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
 
   self.showBreakDown = function(){
     self.furtherInfoLoaded = true;
-    analysisResource.get().$promise.then(function(data){
-      self.breakdownResponse = data.media_diet;
+    analysisFactory.analysisApiCall().$promise.then(function(response){
+      self.breakdownResponse = response.media_diet;
       self.sources = Object.keys(self.breakdownResponse);
       self.percentageRead = self.sources.map(function (key) {
                         return self.breakdownResponse[key];
