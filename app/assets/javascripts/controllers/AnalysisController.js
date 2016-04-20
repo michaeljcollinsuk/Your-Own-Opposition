@@ -2,17 +2,17 @@ UrlsApp.controller('analysisController', ['analysisFactory', function(analysisFa
   var self = this;
   self.showUserUrls = false;
 
+  analysisFactory.analysisApiCall().$promise.then(function(response) {
+    self.analysis = response;
+  });
 
   self.toggleShowRecentUrls = function() {
     self.showUserUrls = !self.showUserUrls;
   };
 
   self.showBias = function() {
-    analysisFactory.analysisApiCall().$promise.then(function(response) {
       self.loaded = true;
-      self.analysisResponse = response.bias.political_leaning;
-      self.analysisResponseMessage = response.bias.bias_message;
-    });
+      self.bias = analysisFactory.getBias(self.analysis);
   };
 
   self.hideBias = function() {
@@ -20,15 +20,13 @@ UrlsApp.controller('analysisController', ['analysisFactory', function(analysisFa
   };
 
   self.showBreakDown = function(){
-    analysisFactory.analysisApiCall().$promise.then(function(response) {
-      self.furtherInfoLoaded = true;
-      self.sources = Object.keys(response.media_diet);
-      self.percentageRead = analysisFactory.getPercentageRead(self.sources, response.media_diet);
-  });
+    self.furtherInfoLoaded = true;
+    self.sources = analysisFactory.getSources(self.analysis.media_diet);
+    self.percentageRead = analysisFactory.getPercentageRead(self.sources, self.analysis.media_diet);
+  };
 
   self.hideBreakDown = function() {
     self.furtherInfoLoaded = false;
   };
-};
 
 }]);

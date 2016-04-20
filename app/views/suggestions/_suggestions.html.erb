@@ -1,27 +1,27 @@
-<section class=suggestion ng-controller='suggestionController as suggestion'>
+<section class=suggestion ng-controller='suggestionController as suggestionCtrl'>
 
-  <button ng-hide="suggestion.suggestionsLoaded"  ng-click="suggestion.showSuggestions()">What paper should I read?</button>
-  <button ng-show="suggestion.suggestionsLoaded" ng-click="suggestion.getSuggestions()">Help me balance my bias</button>
+  <button ng-hide="suggestionCtrl.suggestionsLoaded"  ng-click="suggestionCtrl.showSuggestions()">What paper should I read?</button>
+  <button ng-show="suggestionCtrl.suggestionsLoaded" ng-click="suggestionCtrl.getSuggestions()">Help me balance my bias</button>
 
   <div id='suggestions'
-       ng-show="suggestion.suggestionsLoaded"
-       ng-repeat="paper in suggestion.papers">
-    We suggest that you read {{suggestion.recommendedReading[paper]}} articles from the {{paper}}
+       ng-show="suggestionCtrl.suggestionsLoaded"
+       ng-repeat="paper in suggestionCtrl.papers">
+    We suggest that you read {{suggestionCtrl.suggestions.recommended_reading[paper]}} articles from the {{paper}}
   </div>
 
   <div id='crunching_numbers'
-       ng-show="suggestion.searchingForLink">
+       ng-show="suggestionCtrl.searchingForLink">
        Crunching the numbers...
   </div>
 
 <aside id="suggestion-served"
-       ng-show="suggestion.articleLoaded"
-       ng-repeat="link in suggestion.urlLinks track by $index | limitTo:suggestion.numberToRead">
+       ng-show="suggestionCtrl.articleLoaded"
+       ng-repeat="link in suggestionCtrl.urlLinks track by $index">
 
-  <a ng-show="suggestion.articleLoaded" href="{{suggestion.urlLinks[$index]}}">
-    <p id="thislink" >{{suggestion.articleTitles[$index]}}</p>
+  <a ng-show="suggestionCtrl.articleLoaded" href="{{suggestionCtrl.urlLinks[$index]}}">
+    <p id="thislink" >{{suggestionCtrl.articleTitles[$index]}}</p>
     <aside id="article-image">
-    <img id="article-image" src={{suggestion.articleImages[$index]}} alt="article-image">
+    <img id="article-image" src={{suggestionCtrl.articleImages[$index]}} alt="article-image">
     </aside>
   </a>
 </section>

@@ -3,7 +3,7 @@
   <button id="show-bias" ng-hide="analysis.loaded" ng-click="analysis.showBias()">Show my bias</button>
   <button ng-show="analysis.loaded" ng-click="analysis.hideBias()">Hide my bias</button>
 
-  <div id='show_bias' ng-show="analysis.loaded"> My bias rating: {{analysis.analysisResponse}} ... {{analysis.analysisResponseMessage}} </div>
+  <div id='show_bias' ng-show="analysis.loaded"> My bias rating: {{analysis.bias.political_leaning}} ... {{analysis.bias.bias_message}} </div>
 
   <button ng-hide="analysis.furtherInfoLoaded" ng-click="analysis.showBreakDown()">Show my media diet</button>
   <button ng-show="analysis.furtherInfoLoaded" ng-click="analysis.hideBreakDown()">Hide my media diet</button>
