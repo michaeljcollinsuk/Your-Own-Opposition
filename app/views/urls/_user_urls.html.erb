@@ -1,8 +1,8 @@
 <% if @url.any? && current_user %>
-  <button ng-hide="analysis.showUserUrls" ng-click="analysis.toggleShowRecentUrls()">Show me what I've read recently</button>
-  <button ng-show="analysis.showUserUrls" ng-click="analysis.toggleShowRecentUrls()">Hide what I've read recently</button>
+  <button ng-hide="analysisCtrl.showUserUrls" ng-click="analysisCtrl.showUserUrls = !analysisCtrl.showUserUrls">Show me what I've read recently</button>
+  <button ng-show="analysisCtrl.showUserUrls" ng-click="analysisCtrl.showUserUrls = !analysisCtrl.showUserUrls">Hide what I've read recently</button>
 
-<aside ng-show="analysis.showUserUrls" >
+<aside ng-show="analysisCtrl.showUserUrls" >
 
   <div id='urls'>
     <% current_user.urls.each do |url| %>
