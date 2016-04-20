@@ -34,6 +34,7 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
  self.showSuggestions = function() {
    suggestionFactory.suggestionApiCall().$promise.then(function(response){
      self.suggestionsLoaded = true;
+     self.recommendedReading = response.recommended_reading;
      self.papers = Object.keys(response.recommended_reading);
      self.newsSource = self.papers[0];
      self.topKeyword = response.best_topic[0];
@@ -49,7 +50,6 @@ UrlsApp.controller('AnalysisController', ['$resource', '$http', 'suggestionFacto
     self.urlLinks = webhoseFactory.getUrlLinks(response.posts);
     self.articleImages = webhoseFactory.getArticleImages(response.posts);
     self.articleTitles = webhoseFactory.getArticleTitles(response.posts);
-    self.quantity = self.numberToRead;
     self.articleLoaded = true;
     self.searchingForLink = false;
    });
