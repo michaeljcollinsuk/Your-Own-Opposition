@@ -18,7 +18,7 @@
        ng-show="analysis.articleLoaded"
        ng-repeat="link in analysis.urlLinks track by $index | limitTo:quantity">
 
-  <a ng-show="analysis.articleLoaded" href="{{urlLink}}">
+  <a ng-show="analysis.articleLoaded" href="{{analysis.urlLinks[$index]}}">
     <p id="thislink" >{{analysis.articleTitles[$index]}}</p>
     <aside id="article-image">
     <img id="article-image" src={{analysis.articleImages[$index]}} alt="article-image">
