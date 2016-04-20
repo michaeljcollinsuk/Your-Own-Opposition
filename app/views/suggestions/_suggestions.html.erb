@@ -1,27 +1,27 @@
-<section class=suggestion>
+<section class=suggestion ng-controller='suggestionController as suggestion'>
 
-  <button ng-hide="analysis.suggestionsLoaded"  ng-click="analysis.showSuggestions()">What paper should I read?</button>
-  <button ng-show="analysis.suggestionsLoaded" ng-click="analysis.getSuggestions()">Help me balance my bias</button>
+  <button ng-hide="suggestion.suggestionsLoaded"  ng-click="suggestion.showSuggestions()">What paper should I read?</button>
+  <button ng-show="suggestion.suggestionsLoaded" ng-click="suggestion.getSuggestions()">Help me balance my bias</button>
 
   <div id='suggestions'
-       ng-show="analysis.suggestionsLoaded"
-       ng-repeat="paper in analysis.papers">
-    We suggest that you read {{analysis.recommendedReading[paper]}} articles from the {{paper}}
+       ng-show="suggestion.suggestionsLoaded"
+       ng-repeat="paper in suggestion.papers">
+    We suggest that you read {{suggestion.recommendedReading[paper]}} articles from the {{paper}}
   </div>
 
   <div id='crunching_numbers'
-       ng-show="analysis.searchingForLink">
+       ng-show="suggestion.searchingForLink">
        Crunching the numbers...
   </div>
 
 <aside id="suggestion-served"
-       ng-show="analysis.articleLoaded"
-       ng-repeat="link in analysis.urlLinks track by $index | limitTo:analysis.numberToRead">
+       ng-show="suggestion.articleLoaded"
+       ng-repeat="link in suggestion.urlLinks track by $index | limitTo:suggestion.numberToRead">
 
-  <a ng-show="analysis.articleLoaded" href="{{analysis.urlLinks[$index]}}">
-    <p id="thislink" >{{analysis.articleTitles[$index]}}</p>
+  <a ng-show="suggestion.articleLoaded" href="{{suggestion.urlLinks[$index]}}">
+    <p id="thislink" >{{suggestion.articleTitles[$index]}}</p>
     <aside id="article-image">
-    <img id="article-image" src={{analysis.articleImages[$index]}} alt="article-image">
+    <img id="article-image" src={{suggestion.articleImages[$index]}} alt="article-image">
     </aside>
   </a>
 </section>
