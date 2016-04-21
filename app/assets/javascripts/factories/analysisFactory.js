@@ -13,5 +13,13 @@ UrlsApp.factory('analysisFactory', ['$resource', function($resource) {
     });
   };
 
+  self.getBias = function(analysis) {
+    return analysis.bias;
+  };
+
+  self.getSources = function(media_diet) {
+    return Object.keys(media_diet);
+  };
+
   return self;
 }]);

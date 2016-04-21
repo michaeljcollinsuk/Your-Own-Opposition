@@ -1,18 +1,18 @@
 <section class="analysis">
 
-  <button id="show-bias" ng-hide="analysis.loaded" ng-click="analysis.showBias()">Show my bias</button>
-  <button ng-show="analysis.loaded" ng-click="analysis.hideBias()">Hide my bias</button>
+  <button id="show-bias" ng-hide="analysisCtrl.showBias" ng-click="analysisCtrl.showBias = !analysisCtrl.showBias">Show my bias</button>
+  <button ng-show="analysisCtrl.showBias" ng-click="analysisCtrl.showBias = !analysisCtrl.showBias">Hide my bias</button>
 
-  <div id='show_bias' ng-show="analysis.loaded"> My bias rating: {{analysis.analysisResponse}} ... {{analysis.analysisResponseMessage}} </div>
+  <div id='show_bias' ng-show="analysisCtrl.showBias"> My bias rating: {{analysisCtrl.bias.political_leaning}} ... {{analysisCtrl.bias.bias_message}} </div>
 
-  <button ng-hide="analysis.furtherInfoLoaded" ng-click="analysis.showBreakDown()">Show my media diet</button>
-  <button ng-show="analysis.furtherInfoLoaded" ng-click="analysis.hideBreakDown()">Hide my media diet</button>
+  <button ng-hide="analysisCtrl.showMediaDiet" ng-click="analysisCtrl.showMediaDiet = !analysisCtrl.showMediaDiet">Show my media diet</button>
+  <button ng-show="analysisCtrl.showMediaDiet" ng-click="analysisCtrl.showMediaDiet = !analysisCtrl.showMediaDiet">Hide my media diet</button>
 
-  <div id='show_diet' ng-show="analysis.furtherInfoLoaded">
+  <div id='show_diet' ng-show="analysisCtrl.showMediaDiet">
     Your media diet:
 
-    <h2 ng-show="analysis.furtherInfoLoaded" ng-repeat="source in analysis.sources track by $index">
-    {{source}} {{analysis.percentageRead[$index]}}%
+    <h2 ng-show="analysisCtrl.showMediaDiet" ng-repeat="source in analysisCtrl.sources track by $index">
+    {{source}} {{analysisCtrl.percentageRead[$index]}}%
     </h2>
 
     - As you can see, not as balanced as it could be.
