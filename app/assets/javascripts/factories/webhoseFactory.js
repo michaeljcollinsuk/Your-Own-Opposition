@@ -21,7 +21,7 @@ UrlsApp.factory('webhoseFactory', ['$resource', function($resource) {
 
   self.getArticleTitles = function(webhoseData) {
     return webhoseData.map(function(article) {
-      return article.title;
+      return article.thread.title;
     });
   };
 
